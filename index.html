@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="obsidiana">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0">
+<title>📚 StudyPlanner ECOEMS 2026</title>
+<meta name="theme-color" content="#FFD700">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden;max-width:100vw;width:100%;scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;font-size:16px;line-height:1.7;letter-spacing:.2px;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;transition:background-color .6s ease,color .6s ease}
+img,canvas,svg,video{max-width:100%;height:auto}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+input,textarea,select{font-family:inherit;color:inherit;background:var(--bg-tertiary);border:1px solid var(--border-base);border-radius:10px;padding:10px 14px;font-size:1rem;transition:all .3s;outline:none;width:100%}
+input:focus,textarea:focus{border-color:var(--accent-primary);box-shadow:0 0 0 3px rgba(255,215,0,.12)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--accent-primary);border-radius:4px;opacity:.4}
+::-webkit-scrollbar-thumb:hover{opacity:.7}
+::selection{background:var(--accent-primary);color:#000}
+
+:root,:root[data-theme="obsidiana"]{--bg-primary:#0A0A0A;--bg-secondary:#141414;--bg-tertiary:#1A1A1A;--bg-hover:#222;--border-base:#2D2D2D;--border-subtle:#333;--accent-primary:#FFD700;--accent-secondary:#FFC107;--accent-tertiary:#B8860B;--accent-deep:#D4AF37;--text-primary:#FFF;--text-secondary:#F5F5F5;--text-tertiary:#CCC;--text-muted:#888;--text-faint:#4A4A4A;--border-contrast:rgba(255,215,0,.15);--shadow-card:0 4px 24px rgba(255,215,0,.06);--shadow-hover:0 8px 32px rgba(255,215,0,.12);--shadow-modal:0 25px 60px rgba(0,0,0,.6);--overlay-bg:rgba(0,0,0,.65)}
+:root[data-theme="lavanda"]{--bg-primary:#1a1525;--bg-secondary:#221e30;--bg-tertiary:#2a2438;--bg-hover:#332b42;--border-base:#3a3247;--accent-primary:#C8A4FF;--accent-secondary:#B388FF;--accent-tertiary:#9966CC;--accent-deep:#A77BFF;--text-secondary:#D8CCE8;--text-tertiary:#B0A4C8;--text-muted:#9990A8;--border-contrast:rgba(200,150,255,.25);--shadow-card:0 4px 24px rgba(200,150,255,.06);--shadow-hover:0 8px 32px rgba(200,150,255,.12)}
+:root[data-theme="azul"]{--bg-primary:#0a1628;--bg-secondary:#111d33;--bg-tertiary:#16243e;--bg-hover:#1c2c4a;--border-base:#25334d;--accent-primary:#64C8FF;--accent-secondary:#4DB8F0;--accent-tertiary:#3399CC;--accent-deep:#52BBEE;--text-secondary:#CCDDEE;--text-tertiary:#AAC0DD;--text-muted:#889AAA;--border-contrast:rgba(100,200,255,.25);--shadow-card:0 4px 24px rgba(100,200,255,.06);--shadow-hover:0 8px 32px rgba(100,200,255,.12)}
+:root[data-theme="verde"]{--bg-primary:#0a1a0f;--bg-secondary:#112218;--bg-tertiary:#162a1e;--bg-hover:#1c3325;--border-base:#243d2e;--accent-primary:#96FF64;--accent-secondary:#7FE051;--accent-tertiary:#5FA63D;--accent-deep:#82E850;--text-secondary:#CCE0CC;--text-tertiary:#AAC8AA;--text-muted:#889A88;--border-contrast:rgba(150,255,100,.25);--shadow-card:0 4px 24px rgba(150,255,100,.06);--shadow-hover:0 8px 32px rgba(150,255,100,.12)}
+:root[data-theme="grafito"]{--bg-primary:#121215;--bg-secondary:#1a1a1f;--bg-tertiary:#1f1f25;--bg-hover:#25252b;--border-base:#2d2d35;--accent-primary:#C8C8DC;--accent-secondary:#B0B0C8;--accent-tertiary:#8888A0;--accent-deep:#BABACE;--text-secondary:#CCCCDD;--text-tertiary:#AAAABC;--text-muted:#888899;--border-contrast:rgba(200,200,220,.2);--shadow-card:0 4px 24px rgba(200,200,220,.06);--shadow-hover:0 8px 32px rgba(200,200,220,.12)}
+
+.loading-screen{position:fixed;inset:0;z-index:99999;background:var(--bg-primary);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,transform .6s}
+.loading-screen.hide{opacity:0;transform:scale(1.02);pointer-events:none}
+.loading-logo{font-family:'Poppins',sans-serif;font-weight:800;font-size:2.25rem;color:var(--accent-primary);animation:pulse-logo 1.5s ease-in-out infinite;margin-bottom:32px}
+@keyframes pulse-logo{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.loading-bar-track{width:240px;height:4px;background:var(--bg-tertiary);border-radius:2px;overflow:hidden}
+.loading-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent-tertiary),var(--accent-primary));border-radius:2px;width:0;transition:width 2s cubic-bezier(.4,0,.2,1)}
+
+.time-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:200;background:var(--bg-tertiary)}
+.time-bar-fill{height:100%;background:var(--accent-primary);opacity:.5;transition:width 60s linear}
+
+.header{position:sticky;top:3px;z-index:100;height:72px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border-contrast);transition:background .6s}
+[data-theme="lavanda"] .header{background:rgba(26,21,37,.85)}
+[data-theme="azul"] .header{background:rgba(10,22,40,.85)}
+[data-theme="verde"] .header{background:rgba(10,26,15,.85)}
+[data-theme="grafito"] .header{background:rgba(18,18,21,.85)}
+.header-left{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.hamburger{display:none;width:44px;height:44px;align-items:center;justify-content:center;border-radius:10px;font-size:1.4rem;transition:background .3s}
+.hamburger:hover{background:var(--bg-hover)}
+.site-logo{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.375rem;background:linear-gradient(90deg,var(--accent-primary),var(--accent-secondary),var(--accent-primary));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;white-space:nowrap;cursor:pointer}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+.header-center{flex:1;display:flex;justify-content:center;padding:0 20px;min-width:0}
+.search-container{position:relative;width:360px;max-width:100%}
+.search-input{width:100%;height:44px;border-radius:12px;padding:0 40px 0 44px;background:var(--bg-tertiary);border:1px solid var(--border-base);font-size:.938rem}
+.search-input:focus{border-color:var(--accent-primary);box-shadow:0 0 0 3px rgba(255,215,0,.1)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1rem;pointer-events:none}
+.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;display:none;align-items:center;justify-content:center;color:var(--text-muted);font-size:.875rem;transition:all .3s}
+.search-clear.show{display:flex}
+.search-clear:hover{background:var(--bg-hover);color:var(--text-primary)}
+.header-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.header-clock{font-family:'Poppins',sans-serif;font-weight:500;font-size:.875rem;color:var(--text-muted);opacity:.6;min-width:70px;text-align:center}
+.header-btn{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--text-tertiary);font-size:1.25rem;transition:all .3s}
+.header-btn:hover{background:var(--bg-hover);color:var(--accent-primary);transform:translateY(-1px)}
+.header-btn:active{transform:translateY(1px)}
+.level-badge{width:44px;height:44px;border-radius:50%;border:2px solid var(--accent-primary);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:.875rem;color:var(--accent-primary);cursor:pointer;transition:box-shadow .3s}
+.level-badge:hover{box-shadow:0 0 12px rgba(255,215,0,.3)}
+
+.banner-frases{min-height:60px;padding:18px 48px;display:flex;align-items:center;justify-content:center;background:rgba(255,215,0,.03);border-bottom:1px solid rgba(255,215,0,.08);overflow:hidden;position:relative;transition:background .6s}
+.frase-text{font-family:'Nunito',sans-serif;font-weight:400;font-style:italic;font-size:1.1rem;color:var(--text-secondary);opacity:.85;text-align:center;transition:all .6s;max-width:100%;padding:0 8px}
+.frase-text .quote{color:var(--accent-primary);opacity:.5;font-size:1.3rem}
+
+.filtros-bar{height:56px;display:flex;align-items:center;gap:12px;padding:0 32px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;border-bottom:1px solid var(--border-base);scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.filtros-bar::-webkit-scrollbar{height:4px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:22px;font-size:.875rem;font-weight:600;border:1px solid var(--border-base);color:var(--text-tertiary);background:var(--bg-tertiary);cursor:pointer;flex-shrink:0;transition:all .3s;user-select:none}
+.chip:hover{transform:scale(1.05);border-color:var(--text-muted)}
+.chip.active{background:rgba(255,215,0,.1);color:var(--accent-primary);border-color:var(--accent-primary)}
+
+.app-container{display:flex;width:100%;min-height:calc(100vh - 200px)}
+
+.sidebar{width:260px;flex-shrink:0;background:var(--bg-primary);border-right:1px solid var(--border-contrast);padding:24px 16px;display:flex;flex-direction:column;position:sticky;top:75px;height:calc(100vh - 75px);overflow-y:auto;overflow-x:hidden;transition:width .4s ease,background .6s}
+.sidebar.collapsed{width:76px}
+.sidebar.collapsed .menu-text,.sidebar.collapsed .sidebar-profile-info{display:none}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:998}
+.sidebar-overlay.show{display:block}
+.menu-items{flex:1;display:flex;flex-direction:column;gap:4px}
+.menu-item{display:flex;align-items:center;gap:14px;padding:12px 18px;border-radius:10px;font-size:.95rem;color:var(--text-tertiary);cursor:pointer;transition:all .3s}
+.menu-item:hover{background:rgba(255,215,0,.08);color:var(--text-primary)}
+.menu-item.active{border-left:3px solid var(--accent-primary);background:rgba(255,215,0,.05);color:var(--accent-primary)}
+.menu-item .icon{font-size:1.15rem;width:24px;text-align:center;flex-shrink:0}
+.menu-text{white-space:nowrap;overflow:hidden}
+.sidebar-profile{margin-top:auto;padding:16px;border-top:1px solid var(--border-base);display:flex;align-items:center;gap:12px}
+.sidebar-avatar{font-size:1.75rem;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--bg-tertiary);border-radius:50%;flex-shrink:0;cursor:pointer}
+.sidebar-profile-info{min-width:0}
+.sidebar-profile-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:.938rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sidebar-profile-rank{font-size:.75rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.main-content{flex:1;min-width:0;padding:40px 32px;max-width:1200px;margin:0 auto;overflow-x:hidden;width:100%}
+
+.panel-derecho{width:280px;flex-shrink:0;padding:24px 20px;border-left:1px solid var(--border-contrast);position:sticky;top:75px;height:calc(100vh - 75px);overflow-y:auto}
+.panel-section-title{font-family:'Nunito',sans-serif;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:1.8px;color:var(--text-muted);margin-bottom:14px}
+.panel-stat{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border-base)}
+.panel-stat-label{font-size:.875rem;color:var(--text-tertiary)}
+.panel-stat-value{font-family:'Poppins',sans-serif;font-weight:700;color:var(--accent-primary);font-size:.95rem}
+
+.dashboard{margin-bottom:40px}
+.dashboard-greeting{font-family:'Poppins',sans-serif;font-weight:800;font-size:2rem;margin-bottom:6px;line-height:1.2;word-break:break-word}
+.dashboard-greeting .wave{display:inline-block;animation:wave-hand 2s ease-in-out 3;transform-origin:70% 70%}
+@keyframes wave-hand{0%,60%,100%{transform:rotate(0)}10%,30%,50%{transform:rotate(14deg)}20%,40%{transform:rotate(-8deg)}}
+.dashboard-subtitle{font-size:.95rem;color:var(--text-muted);margin-bottom:28px}
+
+.dashboard-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:28px}
+.dash-card{padding:22px;border-radius:14px;border:1px solid var(--border-contrast);background:var(--bg-secondary);box-shadow:var(--shadow-card);transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column;min-height:140px}
+.dash-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.dash-card-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.dash-card-iconbox{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;background:rgba(255,215,0,.1);color:var(--accent-primary);flex-shrink:0}
+.dash-card-iconbox.streak{background:rgba(255,107,53,.15);color:#FF6B35}
+.dash-card-iconbox.progress{background:rgba(100,200,255,.12);color:#64C8FF}
+.dash-card-label{font-size:.75rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.dash-card-value{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.75rem;color:var(--accent-primary);line-height:1.1;margin-top:2px}
+.dash-card-text{font-family:'Poppins',sans-serif;font-weight:600;font-size:1rem;color:var(--text-secondary);line-height:1.3;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dash-card-mini-action{margin-top:auto;padding-top:12px}
+.dash-card-mini-btn{padding:8px 16px;border-radius:8px;background:var(--bg-tertiary);color:var(--text-secondary);font-family:'Poppins',sans-serif;font-weight:600;font-size:.813rem;border:1px solid var(--border-base);transition:all .3s}
+.dash-card-mini-btn:hover{background:var(--accent-primary);color:#000;border-color:var(--accent-primary)}
+.dash-progress-circle{display:flex;justify-content:center;align-items:center;margin-top:auto}
+.progress-ring{transform:rotate(-90deg)}
+.progress-ring-bg{fill:none;stroke:var(--border-base);stroke-width:6}
+.progress-ring-fill{fill:none;stroke:var(--accent-primary);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)}
+.dashboard-quote{font-family:'Nunito',sans-serif;font-style:italic;font-size:1.1rem;color:var(--text-secondary);opacity:.85;margin-bottom:20px;padding:16px 20px;border-left:3px solid var(--accent-primary);border-radius:0 10px 10px 0;background:rgba(255,215,0,.02)}
+.dashboard-cta{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:10px;background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));color:#000;font-family:'Poppins',sans-serif;font-weight:600;font-size:.95rem;transition:all .3s;border:none;cursor:pointer}
+.dashboard-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,215,0,.3)}
+
+.xp-section{margin-bottom:32px}
+.xp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:12px}
+.xp-rank{display:flex;align-items:center;gap:10px}
+.xp-rank-emoji{font-size:1.5rem}
+.xp-rank-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.05rem}
+.xp-rank-level{font-size:.75rem;color:var(--text-muted)}
+.xp-numbers{font-family:'Poppins',sans-serif;font-weight:600;font-size:.875rem;color:var(--text-tertiary)}
+.xp-bar{height:30px;border-radius:15px;border:1px solid var(--border-contrast);background:var(--bg-tertiary);overflow:hidden;position:relative}
+.xp-bar-fill{height:100%;border-radius:15px;background:linear-gradient(90deg,var(--accent-tertiary),var(--accent-primary),var(--accent-secondary));transform-origin:left;transition:transform 1.2s cubic-bezier(.4,0,.2,1);position:relative}
+.xp-bar-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15) 50%,transparent);background-size:200% 100%;animation:xp-shimmer 2s linear infinite}
+@keyframes xp-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.xp-bar-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:.813rem;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5);z-index:1}
+
+.phase-controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.phase-btn{padding:8px 16px;border-radius:8px;font-size:.813rem;color:var(--text-tertiary);border:1px solid var(--border-base);background:var(--bg-tertiary);transition:all .3s;font-weight:600}
+.phase-btn:hover{color:var(--accent-primary);border-color:var(--accent-primary)}
+
+.fase{margin-bottom:20px;border-radius:14px;border:1px solid var(--border-contrast);overflow:hidden;background:var(--bg-secondary);transition:border-color .6s}
+.fase-header{padding:18px 22px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .3s;user-select:none;gap:16px}
+.fase-header:hover{background:var(--bg-hover)}
+.fase-header-left{display:flex;align-items:center;gap:14px;min-width:0;flex:1}
+.fase-arrow{font-size:.875rem;color:var(--text-muted);transition:transform .25s ease;flex-shrink:0}
+.fase.open .fase-arrow{transform:rotate(90deg)}
+.fase-title-wrap{min-width:0;flex:1}
+.fase-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fase-meta{font-size:.813rem;color:var(--text-muted);margin-top:2px}
+.fase-header-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.fase-progress-mini{width:100px;height:6px;border-radius:3px;background:var(--bg-tertiary);overflow:hidden}
+.fase-progress-mini-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent-tertiary),var(--accent-primary));transition:width .8s ease}
+.fase-count{font-family:'Poppins',sans-serif;font-weight:600;font-size:.813rem;color:var(--text-tertiary);white-space:nowrap}
+.fase-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1),opacity .4s ease,padding .4s;opacity:0;padding:0 22px}
+.fase.open .fase-body{opacity:1;padding:0 22px 22px}
+
+.dia-card{margin-bottom:14px;border-radius:12px;border:1px solid var(--border-contrast);background:var(--bg-primary);box-shadow:var(--shadow-card);transition:all .25s;overflow:hidden}
+.dia-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.dia-card.completed{border-color:var(--accent-primary)}
+.dia-card.today{box-shadow:0 0 0 2px var(--accent-primary),var(--shadow-card);animation:today-pulse 2.5s ease-in-out infinite}
+@keyframes today-pulse{0%,100%{box-shadow:0 0 0 2px var(--accent-primary),var(--shadow-card)}50%{box-shadow:0 0 0 2px var(--accent-primary),0 0 18px rgba(255,215,0,.2)}}
+.dia-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .3s;gap:12px}
+.dia-header:hover{background:var(--bg-hover)}
+.dia-header-left{display:flex;align-items:center;gap:14px;min-width:0;flex:1}
+.dia-num{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.15rem;color:var(--accent-primary);flex-shrink:0;min-width:60px}
+.dia-info{min-width:0;flex:1}
+.dia-fecha{font-size:.95rem;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dia-cats{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.dia-cat-badge{font-size:.7rem;padding:3px 9px;border-radius:10px;font-weight:700;letter-spacing:.3px;white-space:nowrap}
+.dia-header-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.dia-counter{font-family:'Poppins',sans-serif;font-weight:600;font-size:.875rem;color:var(--text-tertiary)}
+.dia-arrow{font-size:.75rem;color:var(--text-muted);transition:transform .25s}
+.dia-card.open .dia-arrow{transform:rotate(90deg)}
+.dia-body{max-height:0;overflow:hidden;transition:max-height .45s ease-out,opacity .4s;opacity:0}
+.dia-card.open .dia-body{opacity:1}
+.dia-activities{padding:6px 20px 20px;display:flex;flex-direction:column;gap:10px}
+
+.activity{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-radius:10px;border:1px solid var(--border-base);background:var(--bg-tertiary);transition:all .3s}
+.activity:hover{background:var(--bg-hover);border-color:var(--border-subtle)}
+.activity.done{opacity:.5}
+.activity.done .activity-name{text-decoration:line-through}
+.checkbox-circular{width:26px;height:26px;border-radius:50%;border:2px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;cursor:pointer;margin-top:2px}
+.checkbox-circular:hover{border-color:var(--accent-primary);transform:scale(1.1)}
+.checkbox-circular.checked{background:var(--accent-primary);border-color:var(--accent-primary)}
+.checkbox-circular.checked::after{content:'✓';color:#000;font-size:.875rem;font-weight:800;animation:check-pop .3s cubic-bezier(.68,-.55,.27,1.55)}
+@keyframes check-pop{0%{transform:scale(0)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+.activity-content{flex:1;min-width:0;cursor:pointer}
+.activity-name{font-size:.95rem;font-weight:600;color:var(--text-secondary);word-wrap:break-word;line-height:1.4}
+.activity-meta{display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.activity-duration{font-size:.75rem;color:var(--text-muted)}
+.activity-cat{font-size:.7rem;padding:2px 8px;border-radius:8px;font-weight:700}
+.activity-priority{font-size:.75rem}
+.activity-detail{max-height:0;overflow:hidden;opacity:0;transition:all .4s ease;padding:0 16px}
+.activity-detail.open{opacity:1;padding:10px 16px 14px}
+.activity-detail-text{font-size:.875rem;color:var(--text-tertiary);line-height:1.65;margin-bottom:10px;word-wrap:break-word;white-space:pre-wrap}
+.activity-notes{width:100%;min-height:60px;resize:vertical;font-size:.875rem;padding:10px;border-radius:8px;background:var(--bg-primary);border:1px solid var(--border-base);color:var(--text-secondary);margin-top:8px}
+
+.xp-float{position:fixed;pointer-events:none;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;color:var(--accent-primary);z-index:9999;animation:float-up 1s ease-out forwards}
+@keyframes float-up{0%{opacity:1;transform:translateY(0) scale(.8)}30%{transform:translateY(-15px) scale(1.2)}100%{opacity:0;transform:translateY(-50px) scale(1)}}
+.complete-day-btn{width:100%;padding:11px 24px;border-radius:10px;background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));color:#000;font-family:'Poppins',sans-serif;font-weight:600;font-size:.95rem;margin-top:12px;transition:all .3s;border:none;cursor:pointer}
+.complete-day-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,215,0,.3)}
+.complete-day-btn.completed{background:rgba(80,200,120,.2);color:#50C878;cursor:default}
+
+.view{display:none;width:100%;animation:fadeSlideIn .3s ease-out}
+.view.active{display:block}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateX(15px)}to{opacity:1;transform:translateX(0)}}
+
+.section-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.5rem;margin-bottom:20px}
+
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-header-cell{text-align:center;font-weight:700;font-size:.75rem;color:var(--text-muted);padding:8px 0;text-transform:uppercase}
+.cal-cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;border:1px solid var(--border-base);background:var(--bg-tertiary);cursor:pointer;transition:all .2s;font-size:.875rem;gap:3px;min-height:60px;padding:4px}
+.cal-cell:hover{transform:scale(1.05);border-color:var(--accent-primary);z-index:1}
+.cal-cell.today{border:2px solid var(--accent-primary);background:rgba(255,215,0,.05)}
+.cal-cell.completed{background:rgba(80,200,120,.12)}
+.cal-cell.partial{background:rgba(255,200,0,.08)}
+.cal-cell.empty{border-color:transparent;background:transparent;cursor:default}
+.cal-cell .cal-day-num{font-family:'Poppins',sans-serif;font-weight:600}
+.cal-cell .cal-dot{width:5px;height:5px;border-radius:50%}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{padding:22px;border-radius:14px;border:1px solid var(--border-contrast);background:var(--bg-secondary);text-align:center}
+.stat-card-value{font-family:'Poppins',sans-serif;font-weight:800;font-size:2.25rem;color:var(--accent-primary)}
+.stat-card-label{font-size:.813rem;color:var(--text-muted);margin-top:4px}
+.chart-container{border-radius:14px;border:1px solid var(--border-contrast);background:var(--bg-secondary);padding:22px;margin-bottom:20px}
+.chart-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:1.05rem;margin-bottom:14px}
+
+.achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
+.achievement-card{padding:18px;border-radius:14px;border:1px solid var(--border-contrast);background:var(--bg-secondary);text-align:center;transition:all .25s}
+.achievement-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.achievement-card.locked{opacity:.35;filter:grayscale(1)}
+.achievement-card .ach-icon{font-size:2.25rem;margin-bottom:6px}
+.achievement-card .ach-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:.813rem;margin-bottom:4px}
+.achievement-card .ach-desc{font-size:.7rem;color:var(--text-muted);line-height:1.4}
+
+.pomodoro-container{text-align:center;padding:32px 16px}
+.pomo-timer-svg{margin:0 auto 28px;display:block}
+.pomo-time{font-family:'Poppins',sans-serif;font-weight:800;font-size:2.75rem;margin-bottom:6px}
+.pomo-label{font-size:.95rem;color:var(--text-muted);margin-bottom:28px}
+.pomo-controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.pomo-btn{padding:11px 26px;border-radius:10px;font-family:'Poppins',sans-serif;font-weight:600;font-size:.95rem;transition:all .3s;border:none;cursor:pointer}
+.pomo-btn.primary{background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));color:#000}
+.pomo-btn.secondary{border:1px solid var(--border-contrast);color:var(--text-tertiary);background:transparent}
+.pomo-btn:hover:not(:disabled){transform:translateY(-2px)}
+.pomo-btn:disabled{opacity:.4;cursor:not-allowed}
+.pomo-count{margin-top:22px;font-size:.9rem;color:var(--text-muted)}
+
+.notes-editor{min-height:380px;padding:18px;border-radius:14px;border:1px solid var(--border-contrast);background:var(--bg-secondary);font-size:1rem;line-height:1.7;color:var(--text-secondary);outline:none;overflow-y:auto}
+.notes-editor:empty::before{content:attr(data-placeholder);color:var(--text-faint)}
+.notes-toolbar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.notes-toolbar button{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border-base);color:var(--text-tertiary);font-weight:700;transition:all .3s;background:var(--bg-tertiary);cursor:pointer}
+.notes-toolbar button:hover{background:var(--bg-hover);color:var(--accent-primary);border-color:var(--accent-primary)}
+
+.settings-section{margin-bottom:28px}
+.settings-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.15rem;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border-base)}
+.setting-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.04);gap:16px;flex-wrap:wrap}
+.setting-label{font-size:.95rem}
+.setting-desc{font-size:.75rem;color:var(--text-muted);margin-top:2px}
+.toggle{width:48px;height:26px;border-radius:13px;background:var(--border-base);position:relative;cursor:pointer;transition:background .3s;flex-shrink:0}
+.toggle.on{background:var(--accent-primary)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .3s}
+.toggle.on::after{transform:translateX(22px)}
+
+.theme-swatches{display:flex;gap:14px;flex-wrap:wrap}
+.theme-swatch{width:48px;height:48px;border-radius:50%;cursor:pointer;border:3px solid var(--bg-secondary);box-shadow:0 4px 12px rgba(0,0,0,.3);transition:all .3s;position:relative}
+.theme-swatch:hover{transform:scale(1.12)}
+.theme-swatch.active{border-color:#fff;box-shadow:0 0 0 3px var(--accent-primary)}
+.theme-swatch.active::after{content:'✓';position:absolute;color:#000;font-size:1.2rem;font-weight:900;top:50%;left:50%;transform:translate(-50%,-50%);text-shadow:0 0 4px rgba(255,255,255,.5)}
+
+.danger-zone{border:1px solid rgba(231,76,60,.3);border-radius:12px;padding:20px;background:rgba(231,76,60,.03)}
+.danger-btn{padding:10px 20px;border-radius:10px;border:1px solid #E74C3C;color:#E74C3C;font-family:'Poppins',sans-serif;font-weight:600;background:transparent;cursor:pointer;transition:all .3s}
+.danger-btn:hover{background:rgba(231,76,60,.1)}
+
+.modal-overlay{position:fixed;inset:0;background:var(--overlay-bg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .35s ease;pointer-events:none;padding:16px}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal{background:var(--bg-secondary);border-radius:18px;border:1px solid var(--border-contrast);box-shadow:var(--shadow-modal);width:min(580px,calc(100vw - 32px));max-height:calc(100vh - 64px);overflow-y:auto;overflow-x:hidden;position:relative;transform:scale(.92);opacity:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .35s}
+.modal-overlay.open .modal{transform:scale(1);opacity:1}
+.modal-line{height:3px;background:linear-gradient(90deg,transparent,var(--accent-primary),transparent);border-radius:18px 18px 0 0}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:22px 28px 0;gap:16px}
+.modal-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.25rem}
+.modal-close{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:1.15rem;transition:all .3s;flex-shrink:0;cursor:pointer;background:none;border:none}
+.modal-close:hover{background:var(--bg-hover);color:var(--accent-primary)}
+.modal-body{padding:20px 28px 28px}
+.levelup-modal .modal{text-align:center}
+.levelup-badge{font-size:4rem;margin:20px 0 14px;animation:badge-pop 1.5s ease-out}
+@keyframes badge-pop{0%{transform:scale(0) rotate(-180deg);opacity:0}50%{transform:scale(1.3) rotate(10deg)}70%{transform:scale(.9)}100%{transform:scale(1) rotate(0);opacity:1}}
+.levelup-title{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.75rem;color:var(--accent-primary);margin-bottom:8px}
+.levelup-rank{font-size:1.1rem;color:var(--text-secondary);margin-bottom:28px}
+
+.toast-container{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;max-width:calc(100vw - 40px)}
+.toast{padding:13px 22px;border-radius:12px;background:var(--bg-secondary);border:1px solid var(--border-contrast);box-shadow:0 8px 24px rgba(0,0,0,.3);font-size:.9rem;color:var(--text-secondary);pointer-events:auto;animation:toast-in .4s cubic-bezier(.68,-.55,.27,1.55);max-width:340px;word-break:break-word}
+@keyframes toast-in{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:translateX(0)}}
+.toast.out{animation:toast-out .3s ease-in forwards}
+@keyframes toast-out{to{opacity:0;transform:translateX(100%)}}
+.toast.golden{border-color:var(--accent-primary);background:rgba(255,215,0,.08)}
+.toast.save{opacity:.75;font-size:.813rem}
+
+.confetti-canvas{position:fixed;inset:0;z-index:99998;pointer-events:none}
+
+.footer{background:#080808;border-top:1px solid var(--border-contrast);padding:24px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.footer-left{font-family:'Nunito',sans-serif;font-size:.875rem;color:#888}
+.footer-right{display:flex;align-items:center;gap:10px}
+.footer-right a{color:var(--text-tertiary);text-decoration:none;font-size:.875rem;transition:color .3s;display:flex;align-items:center;gap:8px}
+.footer-right a:hover{color:var(--accent-primary)}
+.footer-ig{width:18px;height:18px;fill:currentColor}
+
+@media(max-width:1200px){.panel-derecho{display:none}.main-content{padding:32px 24px;max-width:100%}}
+@media(max-width:1024px){.sidebar{width:76px}.sidebar .menu-text,.sidebar .sidebar-profile-info{display:none}.main-content{padding:28px 20px}}
+@media(max-width:768px){.sidebar{position:fixed;left:-300px;top:0;height:100vh;width:260px;z-index:999;transition:left .3s ease}.sidebar.mobile-open{left:0}.sidebar .menu-text,.sidebar .sidebar-profile-info{display:block}.hamburger{display:flex}.app-container{display:block}.main-content{padding:20px 14px;max-width:100%}.header{padding:0 14px;height:62px}.header-clock{display:none}.search-container{width:100%;max-width:180px}.banner-frases{padding:12px 18px}.frase-text{font-size:.95rem}.filtros-bar{padding:0 14px}.dashboard-greeting{font-size:1.5rem}.dashboard-cards{grid-template-columns:1fr}.dia-header{padding:14px 14px;flex-wrap:wrap}.dia-num{min-width:auto}.dia-activities{padding:6px 14px 14px}.fase-header{padding:14px 16px}.fase-progress-mini{width:60px;display:none}.modal{width:calc(100vw - 16px)}.modal-header{padding:18px 20px 0}.modal-body{padding:18px 20px 22px}.footer{flex-direction:column;text-align:center;padding:20px 16px}.cal-cell{min-height:44px;font-size:.7rem}.stats-grid{grid-template-columns:repeat(2,1fr)}.achievements-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}.section-title{font-size:1.25rem}}
+@media(max-width:480px){.search-container{max-width:130px}.header-right{gap:6px}.header-btn{width:36px;height:36px;font-size:1.1rem}.level-badge{width:36px;height:36px;font-size:.75rem}.stats-grid{grid-template-columns:1fr}.dashboard-greeting{font-size:1.35rem}.dia-num{font-size:1rem}.activity{padding:10px 12px}.activity-name{font-size:.9rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen">
+<div class="loading-logo">📚 StudyPlanner</div>
+<div class="loading-bar-track"><div class="loading-bar-fill" id="loadingBar"></div></div>
+</div>
+
+<div class="time-bar"><div class="time-bar-fill" id="timeBar"></div></div>
+
+<header class="header">
+<div class="header-left">
+<button class="hamburger" id="hamburgerBtn">☰</button>
+<div class="site-logo" id="siteLogo">📚 StudyPlanner</div>
+</div>
+<div class="header-center">
+<div class="search-container">
+<span class="search-icon">🔍</span>
+<input type="text" class="search-input" id="searchInput" placeholder="Buscar...">
+<button class="search-clear" id="searchClear">✕</button>
+</div>
+</div>
+<div class="header-right">
+<span class="header-clock" id="headerClock">00:00:00</span>
+<button class="header-btn" id="muteBtn" title="Sonido">🔊</button>
+<div class="level-badge" id="levelBadge" title="Nivel">1</div>
+<button class="header-btn" id="settingsBtn" title="Configuración">⚙️</button>
+</div>
+</header>
+
+<div class="banner-frases" id="bannerFrases">
+<p class="frase-text"><span class="quote">❝</span> <span id="fraseContent">Cargando...</span> <span class="quote">❞</span></p>
+</div>
+
+<div class="filtros-bar" id="filtrosBar">
+<button class="chip active" data-filter="todas">📋 Todas</button>
+<button class="chip" data-filter="mat">📐 Matemáticas</button>
+<button class="chip" data-filter="verbal">📖 Hab. Verbal</button>
+<button class="chip" data-filter="habmat">🧮 Hab. Mat.</button>
+<button class="chip" data-filter="esp">✍️ Español</button>
+<button class="chip" data-filter="hist">📜 Historia</button>
+<button class="chip" data-filter="geo">🌎 Geografía</button>
+<button class="chip" data-filter="civ">🏛️ Cívica</button>
+<button class="chip" data-filter="bio">🧬 Biología</button>
+<button class="chip" data-filter="qui">⚗️ Química</button>
+<button class="chip" data-filter="fis">🔬 Física</button>
+</div>
+
+<div class="app-container">
+
+<aside class="sidebar" id="sidebar">
+<nav class="menu-items">
+<div class="menu-item active" data-view="panel"><span class="icon">📋</span><span class="menu-text">Panel Principal</span></div>
+<div class="menu-item" data-view="calendario"><span class="icon">📅</span><span class="menu-text">Calendario</span></div>
+<div class="menu-item" data-view="estadisticas"><span class="icon">📊</span><span class="menu-text">Estadísticas</span></div>
+<div class="menu-item" data-view="nivel"><span class="icon">🏆</span><span class="menu-text">Niveles</span></div>
+<div class="menu-item" data-view="pomodoro"><span class="icon">⏱️</span><span class="menu-text">Pomodoro</span></div>
+<div class="menu-item" data-view="notas"><span class="icon">📝</span><span class="menu-text">Notas</span></div>
+<div class="menu-item" data-view="metas"><span class="icon">🎯</span><span class="menu-text">Metas</span></div>
+<div class="menu-item" data-view="logros"><span class="icon">🏅</span><span class="menu-text">Logros</span></div>
+<div class="menu-item" data-view="configuracion"><span class="icon">⚙️</span><span class="menu-text">Configuración</span></div>
+</nav>
+<div class="sidebar-profile">
+<div class="sidebar-avatar" id="sidebarAvatar">🧑‍🎓</div>
+<div class="sidebar-profile-info">
+<div class="sidebar-profile-name" id="sidebarName">Estudiante</div>
+<div class="sidebar-profile-rank" id="sidebarRank">🔰 Aprendiz Inicial</div>
+</div>
+</div>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<main class="main-content" id="mainContent">
+
+<div class="view active" id="view-panel">
+<div class="dashboard">
+<h1 class="dashboard-greeting" id="dashGreeting">Buenos días, Estudiante <span class="wave">👋</span></h1>
+<p class="dashboard-subtitle" id="dashSubtitle">0 de 0 actividades completadas</p>
+<div class="dashboard-cards">
+<div class="dash-card">
+<div class="dash-card-header">
+<div class="dash-card-iconbox streak">🔥</div>
+<div>
+<div class="dash-card-label">Racha actual</div>
+<div class="dash-card-value" id="streakValue">0 días</div>
+</div>
+</div>
+<div style="font-size:.813rem;color:var(--text-muted);margin-top:auto">Mejor: <span id="bestStreak">0</span> días</div>
+</div>
+<div class="dash-card">
+<div class="dash-card-header">
+<div class="dash-card-iconbox">⏭️</div>
+<div style="min-width:0;flex:1">
+<div class="dash-card-label">Próxima actividad</div>
+<div class="dash-card-text" id="nextTaskName">Cargando...</div>
+</div>
+</div>
+<div class="dash-card-mini-action">
+<button class="dash-card-mini-btn" id="goToNextBtn">Ir a la actividad →</button>
+</div>
+</div>
+<div class="dash-card">
+<div class="dash-card-header">
+<div class="dash-card-iconbox progress">📊</div>
+<div>
+<div class="dash-card-label">Progreso de hoy</div>
+<div class="dash-card-value" id="todayPctValue">0%</div>
+</div>
+</div>
+<div class="dash-progress-circle">
+<svg class="progress-ring" width="80" height="80" viewBox="0 0 100 100">
+<circle class="progress-ring-bg" cx="50" cy="50" r="42"/>
+<circle class="progress-ring-fill" id="todayProgressRing" cx="50" cy="50" r="42" stroke-dasharray="263.89" stroke-dashoffset="263.89"/>
+</svg>
+</div>
+</div>
+</div>
+<div class="dashboard-quote" id="dashQuote">❝ La disciplina es el puente entre tus metas y tus logros. ❞</div>
+<button class="dashboard-cta" id="scrollToPlanBtn">Ver mi plan completo ↓</button>
+</div>
+
+<div class="xp-section" id="xpSection">
+<div class="xp-header">
+<div class="xp-rank">
+<span class="xp-rank-emoji" id="xpEmoji">🔰</span>
+<div>
+<div class="xp-rank-name" id="xpRankName">Aprendiz Inicial</div>
+<div class="xp-rank-level" id="xpRankLevel">Nivel 1</div>
+</div>
+</div>
+<div class="xp-numbers" id="xpNumbers">0 / 100 XP</div>
+</div>
+<div class="xp-bar">
+<div class="xp-bar-fill" id="xpBarFill" style="transform:scaleX(0)"></div>
+<div class="xp-bar-text" id="xpBarText">0 / 100 XP</div>
+</div>
+</div>
+
+<div class="phase-controls">
+<button class="phase-btn" id="expandAllBtn">↓ Expandir todas</button>
+<button class="phase-btn" id="collapseAllBtn">↑ Colapsar todas</button>
+</div>
+
+<div id="fasesContainer"></div>
+</div>
+
+<div class="view" id="view-calendario">
+<h2 class="section-title">📅 Calendario</h2>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+<button class="header-btn" id="calPrev">◀</button>
+<h3 id="calMonthTitle" style="font-family:Poppins;font-weight:600;font-size:1.15rem">Junio 2026</h3>
+<button class="header-btn" id="calNext">▶</button>
+</div>
+<div class="cal-grid" id="calGrid"></div>
+</div>
+
+<div class="view" id="view-estadisticas">
+<h2 class="section-title">📊 Estadísticas</h2>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-card-value" id="statTotal">0</div><div class="stat-card-label">Completadas</div></div>
+<div class="stat-card"><div class="stat-card-value" id="statStreak">0</div><div class="stat-card-label">Racha actual</div></div>
+<div class="stat-card"><div class="stat-card-value" id="statTime">0h</div><div class="stat-card-label">Tiempo total</div></div>
+<div class="stat-card"><div class="stat-card-value" id="statAvg">0</div><div class="stat-card-label">Promedio/día</div></div>
+</div>
+<div class="chart-container">
+<div class="chart-title">Actividades por materia</div>
+<canvas id="catChart" height="240"></canvas>
+</div>
+<div class="chart-container">
+<div class="chart-title">Progreso por semana</div>
+<canvas id="weekChart" height="200"></canvas>
+</div>
+</div>
+
+<div class="view" id="view-nivel">
+<h2 class="section-title">🏆 Niveles y Rangos</h2>
+<div id="ranksGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px"></div>
+</div>
+
+<div class="view" id="view-pomodoro">
+<h2 class="section-title">⏱️ Pomodoro</h2>
+<div class="pomodoro-container">
+<svg class="pomo-timer-svg" width="200" height="200" viewBox="0 0 200 200">
+<circle cx="100" cy="100" r="90" fill="none" stroke="var(--border-base)" stroke-width="8"/>
+<circle id="pomoCircle" cx="100" cy="100" r="90" fill="none" stroke="var(--accent-primary)" stroke-width="8" stroke-linecap="round" stroke-dasharray="565.49" stroke-dashoffset="0" transform="rotate(-90 100 100)" style="transition:stroke-dashoffset 1s linear"/>
+</svg>
+<div class="pomo-time" id="pomoTime">25:00</div>
+<div class="pomo-label" id="pomoLabel">Sesión de enfoque</div>
+<div class="pomo-controls">
+<button class="pomo-btn primary" id="pomoStartBtn">▶ Iniciar</button>
+<button class="pomo-btn secondary" id="pomoPauseBtn" disabled>⏸ Pausar</button>
+<button class="pomo-btn secondary" id="pomoResetBtn">🔄 Reset</button>
+</div>
+<div class="pomo-count" id="pomoCount">🍅 Pomodoros: 0</div>
+</div>
+</div>
+
+<div class="view" id="view-notas">
+<h2 class="section-title">📝 Notas</h2>
+<div class="notes-toolbar">
+<button onclick="document.execCommand('bold')"><b>B</b></button>
+<button onclick="document.execCommand('italic')"><i>I</i></button>
+<button onclick="document.execCommand('underline')"><u>U</u></button>
+<button onclick="document.execCommand('insertUnorderedList')">•</button>
+<button onclick="document.execCommand('insertOrderedList')">1.</button>
+</div>
+<div class="notes-editor" id="notesEditor" contenteditable="true" data-placeholder="Escribe tus notas aquí..."></div>
+</div>
+
+<div class="view" id="view-metas">
+<h2 class="section-title">🎯 Metas</h2>
+<div id="metasContainer"></div>
+<button class="dashboard-cta" id="addMetaBtn" style="margin-top:16px">+ Agregar meta</button>
+</div>
+
+<div class="view" id="view-logros">
+<h2 class="section-title">🏅 Logros</h2>
+<div class="achievements-grid" id="achievementsGrid"></div>
+</div>
+
+<div class="view" id="view-configuracion">
+<h2 class="section-title">⚙️ Configuración</h2>
+
+<div class="settings-section">
+<div class="settings-title">🎨 Apariencia</div>
+<div class="setting-row">
+<div><div class="setting-label">Tema</div><div class="setting-desc">Elige tu estilo visual</div></div>
+<div class="theme-swatches">
+<div class="theme-swatch active" data-theme="obsidiana" style="background:#FFD700"></div>
+<div class="theme-swatch" data-theme="lavanda" style="background:#C8A4FF"></div>
+<div class="theme-swatch" data-theme="azul" style="background:#64C8FF"></div>
+<div class="theme-swatch" data-theme="verde" style="background:#96FF64"></div>
+<div class="theme-swatch" data-theme="grafito" style="background:#C8C8DC"></div>
+</div>
+</div>
+</div>
+
+<div class="settings-section">
+<div class="settings-title">🔊 Sonido</div>
+<div class="setting-row">
+<div><div class="setting-label">Sonidos del sistema</div><div class="setting-desc">Clicks, checks, notificaciones</div></div>
+<div class="toggle on" id="soundToggle"></div>
+</div>
+<div class="setting-row">
+<div><div class="setting-label">Volumen</div></div>
+<input type="range" id="volumeSlider" min="0" max="100" value="60" style="width:140px;accent-color:var(--accent-primary)">
+</div>
+</div>
+
+<div class="settings-section">
+<div class="settings-title">👤 Perfil</div>
+<div class="setting-row">
+<div><div class="setting-label">Nombre</div></div>
+<input type="text" id="nameInput" value="Estudiante" style="width:180px" maxlength="20">
+</div>
+<div class="setting-row">
+<div><div class="setting-label">Avatar</div></div>
+<div id="avatarPicker" style="display:flex;gap:6px;flex-wrap:wrap;max-width:280px"></div>
+</div>
+</div>
+
+<div class="settings-section">
+<div class="settings-title">💾 Datos</div>
+<div class="setting-row">
+<div><div class="setting-label">Respaldo</div><div class="setting-desc">Descarga una copia de tus datos</div></div>
+<button class="dashboard-cta" id="backupBtn" style="font-size:.813rem;padding:8px 18px">💾 Descargar</button>
+</div>
+</div>
+
+<div class="settings-section">
+<div class="settings-title" style="color:#E74C3C">⚠️ Zona Peligrosa</div>
+<div class="danger-zone">
+<p style="margin-bottom:14px;color:var(--text-muted);font-size:.875rem">Esto borrará TODOS tus datos permanentemente.</p>
+<button class="danger-btn" id="resetBtn">🗑️ Reiniciar todo</button>
+</div>
+</div>
+</div>
+
+</main>
+
+<aside class="panel-derecho" id="panelDerecho">
+<div class="panel-section-title">RESUMEN</div>
+<div class="panel-stat"><span class="panel-stat-label">Nivel</span><span class="panel-stat-value" id="panelLevel">1</span></div>
+<div class="panel-stat"><span class="panel-stat-label">XP</span><span class="panel-stat-value" id="panelXP">0</span></div>
+<div class="panel-stat"><span class="panel-stat-label">Racha</span><span class="panel-stat-value" id="panelStreak">0 🔥</span></div>
+<div class="panel-stat"><span class="panel-stat-label">Completadas</span><span class="panel-stat-value" id="panelCompleted">0</span></div>
+<div class="panel-stat"><span class="panel-stat-label">Progreso</span><span class="panel-stat-value" id="panelProgress">0%</span></div>
+<div style="margin-top:24px">
+<div class="panel-section-title">PRÓXIMOS DÍAS</div>
+<div id="panelUpcoming"></div>
+</div>
+</aside>
+
+</div>
+
+<footer class="footer">
+<div class="footer-left">Plan ECOEMS · Junio – Septiembre 2026</div>
+<div class="footer-right">
+<a href="https://www.instagram.com/elix02.aep/" target="_blank" rel="noopener noreferrer">
+<svg class="footer-ig" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+@elix02aep
+</a>
+</div>
+</footer>
+
+<div class="toast-container" id="toastContainer"></div>
+<canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+
+<script>
+const CATEGORIES={mat:{name:'Matemáticas',emoji:'📐',color:'#4A90D9'},verbal:{name:'Hab. Verbal',emoji:'📖',color:'#E67E22'},habmat:{name:'Hab. Matemática',emoji:'🧮',color:'#9B59B6'},esp:{name:'Español',emoji:'✍️',color:'#E74C3C'},hist:{name:'Historia',emoji:'📜',color:'#F39C12'},geo:{name:'Geografía',emoji:'🌎',color:'#1ABC9C'},civ:{name:'F. Cívica',emoji:'🏛️',color:'#E67E22'},bio:{name:'Biología',emoji:'🧬',color:'#50C878'},qui:{name:'Química',emoji:'⚗️',color:'#2ECC71'},fis:{name:'Física',emoji:'🔬',color:'#3498DB'}};
+
+const RANKS=[
+{level:1,xp:0,name:'Aprendiz Inicial',emoji:'🔰'},
+{level:2,xp:100,name:'Estudiante Novato',emoji:'📗'},
+{level:3,xp:250,name:'Estudiante Constante',emoji:'⭐'},
+{level:4,xp:500,name:'Estudiante Destacado',emoji:'⭐⭐'},
+{level:5,xp:800,name:'Analista Junior',emoji:'🎖️'},
+{level:6,xp:1200,name:'Analista',emoji:'🎖️⭐'},
+{level:7,xp:1700,name:'Analista Avanzado',emoji:'🎖️🎖️'},
+{level:8,xp:2300,name:'Especialista',emoji:'🏅'},
+{level:9,xp:3000,name:'Especialista Senior',emoji:'🏅⭐'},
+{level:10,xp:3800,name:'Investigador',emoji:'🏅🏅'},
+{level:11,xp:4800,name:'Investigador Senior',emoji:'🎓'},
+{level:12,xp:6000,name:'Académico',emoji:'🎓⭐'},
+{level:13,xp:7500,name:'Académico Avanzado',emoji:'🎓🎓'},
+{level:14,xp:9500,name:'Catedrático',emoji:'📜'},
+{level:15,xp:12000,name:'Catedrático Senior',emoji:'📜⭐'},
+{level:16,xp:15000,name:'Maestro Académico',emoji:'📜📜'},
+{level:17,xp:19000,name:'Decano',emoji:'🏛️'},
+{level:18,xp:24000,name:'Rector',emoji:'🏛️⭐'},
+{level:19,xp:30000,name:'Erudito',emoji:'👑'},
+{level:20,xp:40000,name:'Eminencia Suprema',emoji:'👑🌟'}
+];
+
+const FRASES=["El conocimiento es la inversión que siempre paga los mejores intereses.","Cada página que lees es un paso más cerca de tu meta.","La disciplina es el puente entre tus metas y tus logros.","No estudias para el examen, estudias para la vida.","El éxito no se regala, se estudia.","Tu futuro se está escribiendo ahora mismo, con cada hora de estudio.","La constancia vence lo que la dicha no alcanza.","Un día de estudio es un día de ventaja.","Los expertos alguna vez fueron principiantes que no se rindieron.","La educación es el arma más poderosa para cambiar el mundo.","Mientras más sudas en el entrenamiento, menos sangras en la batalla.","Estudiar hoy es invertir en el mañana.","No te detengas cuando estés cansado, detente cuando hayas terminado.","La excelencia no es un acto, sino un hábito.","Cada minuto de estudio cuenta más de lo que crees.","El dolor de la disciplina pesa gramos, el del arrepentimiento pesa toneladas.","Construye tus sueños o alguien te contratará para construir los suyos.","El genio se hace con un 1% de talento y un 99% de trabajo.","Hoy es el día perfecto para aprender algo nuevo.","La perseverancia puede transformar el fracaso en un logro extraordinario.","Aprende como si fueras a vivir para siempre.","Las raíces de la educación son amargas, pero el fruto es dulce.","No importa lo lento que vayas, siempre y cuando no te detengas.","El secreto de salir adelante es comenzar.","La motivación te pone en marcha, el hábito te mantiene.","Estudiar es descubrir lo que ni sabías que no sabías.","Haz hoy lo que otros no quieren, mañana tendrás lo que otros no tienen.","Tu mente es un jardín, tus pensamientos son las semillas.","El aprendizaje nunca agota la mente.","Sé la persona que decidiste ser cuando estabas motivado.","Los libros son el pasaporte a mundos infinitos.","Nunca es demasiado tarde para ser lo que podrías haber sido.","La diferencia entre ordinario y extraordinario es ese pequeño extra.","Invierte en tu mente, es tu activo más valioso.","El camino al éxito está pavimentado con estudio y determinación.","Un libro abierto es un cerebro que habla.","La mejor preparación para mañana es hacer lo mejor hoy.","Nunca consideres el estudio como una obligación, sino como una oportunidad.","La paciencia es la madre de la ciencia.","El conocimiento habla, pero la sabiduría escucha.","Siembra un acto y cosecharás un hábito.","El único lugar donde el éxito viene antes que el trabajo es en el diccionario.","Tu único límite eres tú mismo.","Lo que hoy parece imposible, mañana será tu calentamiento.","El cerebro no es un vaso por llenar, sino una lámpara por encender.","Quien tiene un porqué, encuentra siempre un cómo.","Haz de cada día tu obra maestra.","El fracaso es la oportunidad de comenzar de nuevo con más experiencia.","El mejor momento para empezar fue ayer. El segundo mejor momento es ahora.","La repetición es la madre del aprendizaje."];
+
+// ═══ PLAN COMPLETO 68 DÍAS - ECOEMS 2026 ═══
+const PLAN_DATA=[
+{day:1,phase:0,date:'2026-06-16',dateStr:'Martes 16 de Junio de 2026',activities:[
+{id:'d1a1',name:'Diagnóstico inicial + Leyes de signos',cat:'mat',dur:90,pri:'alta',det:'1. Diagnóstico de 20 reactivos mixtos (enteros, multiplicación con signos, potencias).\n2. Ficha de leyes de signos (+×+=+, +×−=−, −×−=+).\n3. Resuelve 15 ejercicios de signos.\n4. Corrige errores con rojo y clasifica.\n\nEntregable: diagnóstico + ficha + 15 ejercicios resueltos.'},
+{id:'d1a2',name:'Antónimos básicos',cat:'verbal',dur:30,pri:'media',det:'1. Define qué es un antónimo.\n2. Resuelve 15 ejercicios tipo examen.\n3. Escribe 5 pares de antónimos en oraciones.\n\nEjemplos: abundante↔escaso, valiente↔cobarde.'},
+{id:'d1a3',name:'Sucesiones numéricas básicas',cat:'habmat',dur:15,pri:'media',det:'1. Resuelve 10 sucesiones con suma/resta constante.\n2. Anota la regla de cada una.\n\nEjemplo: 2,4,6,8,___ regla: +2'},
+{id:'d1a4',name:'Fuentes de la historia + Periodización',cat:'hist',dur:60,pri:'alta',det:'1. Investiga fuentes primarias y secundarias.\n2. Línea del tiempo: Edad Antigua, Media, Moderna, Contemporánea.\n3. Resumen de 12 líneas sobre la utilidad de estudiar historia.\n4. Contesta 5 preguntas sobre fuentes y sesgos.'}]},
+
+{day:2,phase:0,date:'2026-06-17',dateStr:'Miércoles 17 de Junio de 2026',activities:[
+{id:'d2a1',name:'Fracciones: equivalencia y operaciones',cat:'mat',dur:90,pri:'alta',det:'1. Reglas para simplificar usando divisores comunes.\n2. 5 ejercicios de fracciones equivalentes.\n3. 5 sumas/restas con mismo denominador.\n4. 5 sumas/restas con MCM.\n5. 5 multiplicaciones/divisiones.\n\nGuía: 18/24, 3/8+2/8, 1/3+1/6, 2/5×3/4, 5/6÷2/3.'},
+{id:'d2a2',name:'Complemento directo I',cat:'esp',dur:30,pri:'alta',det:'1. Definición: responde a ¿qué? o ¿a quién? después del verbo.\n2. Prueba de sustitución por lo/la/los/las.\n3. Identifica el CD en 12 oraciones.\n\nEjemplo: Ana compró un libro → Ana lo compró.'},
+{id:'d2a3',name:'Series espaciales iniciales',cat:'habmat',dur:15,pri:'media',det:'1. Resuelve 5 series de figuras.\n2. Describe qué cambia: forma, tamaño, posición o color.'},
+{id:'d2a4',name:'Coordenadas geográficas y husos horarios',cat:'geo',dur:60,pri:'alta',det:'1. Investiga latitud, longitud y altitud.\n2. Dibuja globo terráqueo con Ecuador, Greenwich, paralelos y meridianos.\n3. Explica husos horarios en 10 líneas.\n4. Contesta 5 preguntas.'}]},
+
+{day:3,phase:0,date:'2026-06-18',dateStr:'Jueves 18 de Junio de 2026',activities:[
+{id:'d3a1',name:'Recta numérica, valor absoluto y comparación',cat:'mat',dur:90,pri:'alta',det:'1. Dibuja recta numérica de -20 a 20.\n2. Ubica 15 enteros.\n3. Valor absoluto = distancia al cero.\n4. 20 comparaciones con >, <, =.\n\nGuía: |-9|=?, -7 ___ -3, ordena: -2, 8, -10, 0, 4.'},
+{id:'d3a2',name:'Analogías básicas',cat:'verbal',dur:30,pri:'media',det:'1. Estructura: A es a B como C es a ___.\n2. Practica parte-todo, causa-efecto, función, categoría.\n3. Resuelve 10 analogías.\n\nEjemplos: médico:hospital :: maestro:escuela.'},
+{id:'d3a3',name:'Sucesiones con diferencia constante',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones, escribe la diferencia constante.\nEjemplo: 3,7,11,15,___ → +4'},
+{id:'d3a4',name:'Legalidad, normas y ciudadanía',cat:'civ',dur:60,pri:'alta',det:'1. Investiga qué es norma vs ley.\n2. Tabla: normas morales, sociales, jurídicas, religiosas.\n3. 10 ejemplos de responsabilidades ciudadanas.\n4. Responde: ¿por qué la legalidad ayuda a la convivencia? (8 líneas)'}]},
+
+{day:4,phase:0,date:'2026-06-19',dateStr:'Viernes 19 de Junio de 2026',activities:[
+{id:'d4a1',name:'Divisibilidad, primos y compuestos',cat:'mat',dur:90,pri:'alta',det:'1. Criterios de divisibilidad entre 2, 3, 4, 5, 6, 9, 10.\n2. Aplica a 20 números.\n3. Identifica primos del 1-100 (criba de Eratóstenes).\n4. Clasifica 20 números.\n\nGuía: ¿144 divisible entre 2,3,4,6,9? ¿97 primo o compuesto?'},
+{id:'d4a2',name:'Comprensión lectora: inferencias',cat:'verbal',dur:30,pri:'alta',det:'1. Lee texto corto (150-200 palabras).\n2. Subraya datos explícitos.\n3. 5 preguntas de inferencia.\n4. Justifica cada respuesta.'},
+{id:'d4a3',name:'Series espaciales: patrones',cat:'habmat',dur:15,pri:'media',det:'5 ejercicios. Indica: rotación, cantidad, tamaño, posición o sombreado.'},
+{id:'d4a4',name:'Características de los seres vivos',cat:'bio',dur:60,pri:'alta',det:'1. Características: nutrición, relación, reproducción, homeostasis, crecimiento, adaptación, organización celular.\n2. Niveles: átomo→molécula→célula→tejido→órgano→sistema→organismo→población→comunidad→ecosistema→biósfera.\n3. Resumen 15 líneas.\n4. 8 preguntas con ejemplos.'}]},
+
+{day:5,phase:0,date:'2026-06-22',dateStr:'Lunes 22 de Junio de 2026',activities:[
+{id:'d5a1',name:'MCM y MCD',cat:'mat',dur:90,pri:'alta',det:'1. Diferencia múltiplo vs divisor.\n2. Métodos: lista y descomposición en factores primos.\n3. 10 ejercicios MCM, 10 MCD.\n4. 3 problemas aplicados.\n\nGuía: MCM(12,18), MCD(24,36), luces cada 6 y 8 seg ¿cuándo coinciden?'},
+{id:'d5a2',name:'Vocabulario en contexto',cat:'verbal',dur:30,pri:'media',det:'1. Lee 10 oraciones con palabras desconocidas.\n2. Deduce significado por contexto.\n3. Escribe significado y pista que lo justifica.'},
+{id:'d5a3',name:'Imaginación espacial: cubos',cat:'habmat',dur:15,pri:'media',det:'5 dibujos de cubos desde ángulos distintos. Indica cara arriba, frente, lado.'},
+{id:'d5a4',name:'Materia y propiedades',cat:'qui',dur:60,pri:'alta',det:'1. Define materia.\n2. Generales: masa, volumen, inercia, impenetrabilidad, divisibilidad.\n3. Específicas: densidad, conductividad, solubilidad, punto fusión/ebullición.\n4. Extensivas vs intensivas (5 ejemplos cada una).'}]},
+
+{day:6,phase:1,date:'2026-06-23',dateStr:'Martes 23 de Junio de 2026',activities:[
+{id:'d6a1',name:'Potencias y leyes de exponentes',cat:'mat',dur:90,pri:'alta',det:'1. Base, exponente, potencia.\n2. Leyes: producto, cociente, potencia de potencia, exponente cero.\n3. 25 ejercicios.\n\nGuía: 3²×3⁴, (2³)², 5⁰, x⁵÷x².'},
+{id:'d6a2',name:'Figuras retóricas I',cat:'verbal',dur:30,pri:'media',det:'1. Metáfora, símil, hipérbole.\n2. 3 ejemplos propios de cada una.\n3. Identifica la figura en 10 oraciones.'},
+{id:'d6a3',name:'Sucesiones con × y ÷',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones, escribe regla.\nEjemplo: 3,6,12,24,___ → ×2'},
+{id:'d6a4',name:'Magnitudes y Sistema Internacional',cat:'fis',dur:60,pri:'alta',det:'1. Magnitudes escalares vs vectoriales.\n2. Tabla con ejemplos.\n3. 7 magnitudes fundamentales del SI.\n4. 8 preguntas de repaso.'}]},
+
+{day:7,phase:1,date:'2026-06-24',dateStr:'Miércoles 24 de Junio de 2026',activities:[
+{id:'d7a1',name:'Raíces cuadradas',cat:'mat',dur:90,pri:'alta',det:'1. Raíz = operación inversa del cuadrado.\n2. Memoriza cuadrados del 1²-20².\n3. 15 raíces exactas.\n4. Aproxima 10 raíces entre dos enteros.\n\nGuía: √16, √144, √50 está entre ___ y ___.'},
+{id:'d7a2',name:'Figuras retóricas II',cat:'verbal',dur:30,pri:'media',det:'1. Personificación e ironía.\n2. Identifica en 10 oraciones.\n3. 2 ejemplos propios por figura.'},
+{id:'d7a3',name:'Series espaciales con giros',cat:'habmat',dur:15,pri:'media',det:'5 patrones donde figura gira o cambia posición.'},
+{id:'d7a4',name:'Mapas y escalas',cat:'geo',dur:60,pri:'alta',det:'1. Tipos: político, físico, temático.\n2. Escala numérica vs gráfica.\n3. 5 problemas de distancia real.\n4. Dibuja mapa simple de tu colonia.'}]},
+
+{day:8,phase:1,date:'2026-06-25',dateStr:'Jueves 25 de Junio de 2026',activities:[
+{id:'d8a1',name:'Notación científica',cat:'mat',dur:90,pri:'alta',det:'1. Forma a × 10ⁿ con 1≤a<10.\n2. Convierte 10 grandes y 10 pequeños.\n3. 5 multiplicaciones y 5 divisiones.\n\nGuía: 3,500,000=3.5×10⁶, 0.00021=2.1×10⁻⁴.'},
+{id:'d8a2',name:'Géneros literarios',cat:'verbal',dur:30,pri:'media',det:'1. Lírico, narrativo, épico, dramático.\n2. Características de cada uno.\n3. Clasifica 10 fragmentos o títulos.'},
+{id:'d8a3',name:'Lógica básica',cat:'habmat',dur:15,pri:'media',det:'8 problemas tipo: "si A>B y B>C entonces..."'},
+{id:'d8a4',name:'Mesopotamia',cat:'hist',dur:60,pri:'alta',det:'1. Ubicación entre Tigris y Éufrates.\n2. Aportes: escritura cuneiforme, Hammurabi, ciudades-Estado, comercio.\n3. Ficha de Gilgamesh.\n4. 6 preguntas.'}]},
+
+{day:9,phase:1,date:'2026-06-26',dateStr:'Viernes 26 de Junio de 2026',activities:[
+{id:'d9a1',name:'Lenguaje algebraico',cat:'mat',dur:90,pri:'alta',det:'1. Traduce frases a expresiones.\n2. Identifica variable, constante, operación.\n3. 25 traducciones.\n\nGuía: el doble de un número más 3 → 2x+3.'},
+{id:'d9a2',name:'Complemento directo II',cat:'esp',dur:30,pri:'alta',det:'1. Repasa ¿qué? o ¿a quién?\n2. Sustitución por lo/la/los/las.\n3. Analiza 15 oraciones marcando sujeto, verbo y CD.\n\nEjemplo: María preparó la cena → María la preparó.'},
+{id:'d9a3',name:'Sucesiones combinadas',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones con suma y multiplicación.\nEjemplo: 2,5,11,23,___ → ×2+1'},
+{id:'d9a4',name:'Célula procariota y eucariota',cat:'bio',dur:60,pri:'alta',det:'1. Qué es una célula.\n2. Compara procariota vs eucariota.\n3. Dibuja ambas con etiquetas.\n4. 10 diferencias o características.'}]},
+
+{day:10,phase:1,date:'2026-06-29',dateStr:'Lunes 29 de Junio de 2026',activities:[
+{id:'d10a1',name:'Expresiones algebraicas: monomios y polinomios',cat:'mat',dur:90,pri:'alta',det:'1. Define término, coeficiente, parte literal, grado.\n2. Clasifica 20 expresiones: monomio, binomio, trinomio, polinomio.\n3. Evalúa 10 expresiones sustituyendo valores.\n\nGuía: si x=3, calcula 2x²+5x-1.'},
+{id:'d10a2',name:'Complemento indirecto I',cat:'esp',dur:30,pri:'alta',det:'1. Definición: destinatario o beneficiario.\n2. Pregunta: ¿a quién? o ¿para quién?\n3. Sustitución por le/les.\n4. Analiza 12 oraciones.\n\nEjemplo: Entregué el cuaderno a Luis → Le entregué el cuaderno.'},
+{id:'d10a3',name:'Series geométricas de figuras',cat:'habmat',dur:15,pri:'media',det:'5 series de formas que se repiten, rotan o cambian tamaño.'},
+{id:'d10a4',name:'Mezclas y separación',cat:'qui',dur:60,pri:'alta',det:'1. Mezcla homogénea vs heterogénea.\n2. Tabla de métodos: filtración, decantación, evaporación, cristalización, destilación, cromatografía.\n3. Diseña experimento casero teórico: separar arena, sal y agua.'}]},
+
+{day:11,phase:1,date:'2026-06-30',dateStr:'Martes 30 de Junio de 2026',activities:[
+{id:'d11a1',name:'Suma y resta de monomios y polinomios',cat:'mat',dur:90,pri:'alta',det:'1. Términos semejantes.\n2. 15 sumas/restas de monomios.\n3. 10 sumas/restas de polinomios.\n4. Corrige y rehaz los fallados.\n\nGuía: 3x+5x, 7y²+2y², (2x²+3x-1)+(x²-5x+4).'},
+{id:'d11a2',name:'CD e CI juntos',cat:'esp',dur:30,pri:'alta',det:'1. Analiza 15 oraciones con ambos complementos.\n2. Marca sujeto, verbo, CD y CI.\n3. Sustituye ambos.\n\nEjemplo: Ana regaló un libro a Pedro → Ana se lo regaló.'},
+{id:'d11a3',name:'Desarrollos planos',cat:'habmat',dur:15,pri:'media',det:'Identifica 5 desarrollos planos que forman cubos o prismas.'},
+{id:'d11a4',name:'Conversión de unidades',cat:'fis',dur:60,pri:'alta',det:'1. Conversiones de longitud, masa, tiempo, velocidad.\n2. Tabla km-m-cm, kg-g, h-min-s.\n3. 20 conversiones.\n\nGuía: 5km=?m, 2h=?s, 72km/h=?m/s.'}]},
+
+{day:12,phase:1,date:'2026-07-01',dateStr:'Miércoles 1 de Julio de 2026',activities:[
+{id:'d12a1',name:'Multiplicación de monomios y polinomios',cat:'mat',dur:90,pri:'alta',det:'1. Repasa: multiplicar coeficientes y sumar exponentes.\n2. 10 mult. de monomios.\n3. 10 mult. monomio×polinomio.\n4. 10 productos de binomios.\n\nGuía: 3x·4x=12x², 2x(3x+5)=6x²+10x, (x+2)(x+3).'},
+{id:'d12a2',name:'Nexos y conectores',cat:'verbal',dur:30,pri:'media',det:'1. Clasifica: causa, consecuencia, contraste, adición, orden, conclusión.\n2. Completa 15 oraciones.\n3. Párrafo de 8 líneas con 5 conectores.'},
+{id:'d12a3',name:'Analogías de relación',cat:'habmat',dur:15,pri:'media',det:'10 analogías de causa-efecto, parte-todo y función.'},
+{id:'d12a4',name:'Antiguo Egipto',cat:'hist',dur:60,pri:'alta',det:'1. Río Nilo y agricultura.\n2. Faraones, pirámides, momificación, jeroglíficos.\n3. Mapa mental con 6 ramas.\n4. 6 preguntas sobre organización social y religión.'}]},
+
+{day:13,phase:1,date:'2026-07-02',dateStr:'Jueves 2 de Julio de 2026',activities:[
+{id:'d13a1',name:'División de monomios y polinomios',cat:'mat',dur:90,pri:'alta',det:'1. División de coeficientes y resta de exponentes.\n2. 15 div. de monomios.\n3. 10 div. polinomio÷monomio.\n4. Verifica multiplicando.\n\nGuía: 12x⁶÷3x²=4x⁴, (6x³+9x²)÷3x.'},
+{id:'d13a2',name:'Signos de puntuación I',cat:'esp',dur:30,pri:'alta',det:'Punto, coma, punto y coma, dos puntos.\n1. Función de cada signo.\n2. Puntúa texto de 12 líneas sin puntuación.\n3. 5 usos de la coma: enumeración, aclaración, vocativo, elipsis, conectores.\n4. 4 oraciones con dos puntos.'},
+{id:'d13a3',name:'Sucesiones con fracciones',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones con mitades, tercios o cuartos.\nEjemplo: 1, 1/2, 1/4, 1/8, ___'},
+{id:'d13a4',name:'Derechos humanos',cat:'civ',dur:60,pri:'alta',det:'1. Características: universales, inalienables, indivisibles, interdependientes.\n2. Declaración Universal 1948.\n3. 10 derechos de NNA.\n4. 5 situaciones donde se protege un derecho.'}]},
+
+{day:14,phase:1,date:'2026-07-03',dateStr:'Viernes 3 de Julio de 2026',activities:[
+{id:'d14a1',name:'Ecuaciones de primer grado: intro',cat:'mat',dur:90,pri:'alta',det:'1. Define ecuación, incógnita, miembros, solución.\n2. 20 ecuaciones simples.\n3. Verifica 5 sustituyendo.\n\nGuía: x+5=12→x=7, x-9=4, 3x=21, x/5=6.'},
+{id:'d14a2',name:'Tipos de textos',cat:'verbal',dur:30,pri:'media',det:'1. Informativos, periodísticos, publicitarios, instructivos.\n2. Tabla: propósito, estructura, lenguaje, ejemplo.\n3. Clasifica 8 fragmentos.'},
+{id:'d14a3',name:'Series complejas de figuras',cat:'habmat',dur:15,pri:'media',det:'5 series con rotación y cambio de tamaño.'},
+{id:'d14a4',name:'Célula animal y vegetal',cat:'bio',dur:60,pri:'alta',det:'1. Dibuja célula animal y vegetal.\n2. Señala: núcleo, membrana, citoplasma, mitocondria, pared, cloroplastos, vacuola.\n3. 10 diferencias o semejanzas.'}]},
+
+{day:15,phase:1,date:'2026-07-06',dateStr:'Lunes 6 de Julio de 2026',activities:[
+{id:'d15a1',name:'Ecuaciones: transposición',cat:'mat',dur:90,pri:'alta',det:'1. Aísla incógnita paso a paso.\n2. 15 ecuaciones de dos pasos.\n3. 5 problemas que se modelan con ecuación.\n4. Verifica todas.\n\nGuía: 2x+3=11→x=4, 5x-7=18, 4x+9=29.'},
+{id:'d15a2',name:'Cohesión textual',cat:'verbal',dur:30,pri:'media',det:'1. Pronombres, referencias, repeticiones, conectores.\n2. En texto de 12 líneas, subraya pronombres y a qué se refieren.\n3. Reescribe 5 oraciones evitando repeticiones.'},
+{id:'d15a3',name:'Figuras con múltiples variables',cat:'habmat',dur:15,pri:'media',det:'5 ejercicios con cambio de forma, color y posición.'},
+{id:'d15a4',name:'Sustancias puras y cambios',cat:'qui',dur:60,pri:'alta',det:'1. Elementos vs compuestos.\n2. Clasifica 15 ejemplos.\n3. Cambio físico vs químico.\n4. 10 ejemplos explicando.'}]},
+
+{day:16,phase:1,date:'2026-07-07',dateStr:'Martes 7 de Julio de 2026',activities:[
+{id:'d16a1',name:'Ecuaciones con paréntesis',cat:'mat',dur:90,pri:'alta',det:'1. Repasa propiedad distributiva.\n2. 10 ecuaciones con paréntesis simples.\n3. 5 con paréntesis en ambos lados.\n4. Verifica 5.\n\nGuía: 3(x+2)=15→x=3, 5(x+1)-3=17.'},
+{id:'d16a2',name:'Recursos lingüísticos en textos',cat:'verbal',dur:30,pri:'media',det:'1. Lee poema o fragmento literario.\n2. Identifica metáfora, símil, hipérbole, personificación.\n3. Explica efecto de cada recurso.'},
+{id:'d16a3',name:'Problemas razonados con ecuaciones',cat:'habmat',dur:15,pri:'media',det:'5 problemas cortos: edades, dinero, cantidades.'},
+{id:'d16a4',name:'Estructura interna de la Tierra y placas',cat:'geo',dur:60,pri:'alta',det:'1. Dibuja corteza, manto, núcleo externo e interno.\n2. Límites: convergentes, divergentes, transformantes.\n3. Relación placas-sismos-volcanes.\n4. 8 preguntas.'}]},
+
+{day:17,phase:1,date:'2026-07-08',dateStr:'Miércoles 8 de Julio de 2026',activities:[
+{id:'d17a1',name:'Ecuaciones con fracciones',cat:'mat',dur:90,pri:'alta',det:'1. Elimina denominadores multiplicando por MCM.\n2. 15 ecuaciones con fracciones.\n3. Verifica 5.\n\nGuía: x/3+2=5→x=9, x/4-1=3, (x+2)/5=4.'},
+{id:'d17a2',name:'Texto publicitario',cat:'verbal',dur:30,pri:'media',det:'1. Analiza 3 anuncios.\n2. Identifica producto, público, promesa, lenguaje emotivo.\n3. Técnica de persuasión.'},
+{id:'d17a3',name:'Simetría y rotación',cat:'habmat',dur:15,pri:'media',det:'5 patrones espaciales.'},
+{id:'d17a4',name:'Civilización griega',cat:'hist',dur:60,pri:'alta',det:'1. Democracia ateniense, filosofía, teatro, arquitectura, Olimpo.\n2. Fichas: Sócrates, Platón, Aristóteles.\n3. Atenas vs Esparta.\n4. 8 preguntas.'}]},
+
+{day:18,phase:1,date:'2026-07-09',dateStr:'Jueves 9 de Julio de 2026',activities:[
+{id:'d18a1',name:'Problemas con ecuaciones de 1er grado',cat:'mat',dur:90,pri:'alta',det:'1. Lee, define incógnita, plantea, resuelve.\n2. 12 problemas: edades, precios, perímetros, reparto.\n3. Verifica si tiene sentido.\n\nGuía: Edad María = 3×Luis. Suman 48 años. ¿Edades?'},
+{id:'d18a2',name:'Ortografía básica + acentuación',cat:'verbal',dur:30,pri:'media',det:'1. Repasa b/v, c/s/z, g/j, h, ll/y.\n2. Corrige 20 palabras.\n3. 10 oraciones con palabras corregidas.'},
+{id:'d18a3',name:'Vistas de objetos',cat:'habmat',dur:15,pri:'media',det:'Identifica vista frontal, lateral y superior en 5 figuras.'},
+{id:'d18a4',name:'Nutrición y nutrientes',cat:'bio',dur:60,pri:'alta',det:'1. Autótrofa vs heterótrofa.\n2. Carbohidratos, lípidos, proteínas, vitaminas, minerales, agua.\n3. Tabla: nutriente, función, alimentos.\n4. Menú de un día clasificado.'}]},
+
+{day:19,phase:1,date:'2026-07-10',dateStr:'Viernes 10 de Julio de 2026',activities:[
+{id:'d19a1',name:'Producto notable: binomio al cuadrado',cat:'mat',dur:90,pri:'alta',det:'1. (a+b)²=a²+2ab+b², (a-b)²=a²-2ab+b².\n2. 20 ejercicios.\n3. Comprueba 5.\n\nGuía: (x+3)²=x²+6x+9, (2x-5)²=?'},
+{id:'d19a2',name:'Analogías con oposición y lógica',cat:'verbal',dur:30,pri:'media',det:'1. 15 analogías.\n2. Tipo de relación: oposición, función, lugar, instrumento, causa.'},
+{id:'d19a3',name:'Sucesiones complejas (Fibonacci)',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones, incluyendo Fibonacci.\nEjemplo: 1,1,2,3,5,8,13,___'},
+{id:'d19a4',name:'Modelos atómicos',cat:'qui',dur:60,pri:'alta',det:'1. Línea del tiempo: Demócrito, Dalton, Thomson, Rutherford, Bohr, cuántico.\n2. Aporte de cada uno.\n3. Dibuja: Thomson, Rutherford, Bohr.\n4. 8 preguntas.'}]},
+
+{day:20,phase:1,date:'2026-07-13',dateStr:'Lunes 13 de Julio de 2026',activities:[
+{id:'d20a1',name:'Producto notable: binomio conjugado',cat:'mat',dur:90,pri:'alta',det:'1. (a+b)(a-b)=a²-b².\n2. 20 ejercicios.\n3. Identifica cuándo SÍ y cuándo NO es conjugado.\n\nGuía: (x+5)(x-5)=x²-25, (3a+2)(3a-2)=?'},
+{id:'d20a2',name:'Comprensión argumentativa',cat:'verbal',dur:30,pri:'media',det:'1. Lee ensayo corto.\n2. Identifica tesis, argumentos, conclusión.\n3. 6 preguntas.'},
+{id:'d20a3',name:'Series con simetría bilateral',cat:'habmat',dur:15,pri:'media',det:'5 ejercicios visuales.'},
+{id:'d20a4',name:'Propiedades de la materia y densidad',cat:'fis',dur:60,pri:'alta',det:'1. Masa, volumen, densidad, peso.\n2. Fórmula: d = m/V.\n3. 10 problemas.\n4. Diferencia masa vs peso.\n\nGuía: 100g en 100ml → d=1g/ml.'}]},
+
+{day:21,phase:2,date:'2026-07-14',dateStr:'Martes 14 de Julio de 2026',activities:[
+{id:'d21a1',name:'Producto notable: trinomio al cuadrado',cat:'mat',dur:90,pri:'alta',det:'1. Desarrolla (a+b+c)².\n2. 10 ejercicios de trinomio al cuadrado.\n3. 10 ejercicios mezclando productos notables.'},
+{id:'d21a2',name:'Uso del subjuntivo',cat:'verbal',dur:30,pri:'media',det:'1. Indicativo vs subjuntivo.\n2. Completa 15 oraciones.\n3. 5 oraciones con: espero que, ojalá, aunque, cuando.'},
+{id:'d21a3',name:'Patrones combinados',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones con suma y multiplicación.'},
+{id:'d21a4',name:'Civilización romana',cat:'hist',dur:60,pri:'alta',det:'1. Monarquía, República, Imperio.\n2. Derecho romano, legiones, acueductos, Coliseo.\n3. Línea del tiempo con 8 eventos.\n4. 8 preguntas.'}]},
+
+{day:22,phase:2,date:'2026-07-15',dateStr:'Miércoles 15 de Julio de 2026',activities:[
+{id:'d22a1',name:'Factorización: factor común',cat:'mat',dur:90,pri:'alta',det:'1. Identifica factor en todos los términos.\n2. 20 factorizaciones.\n3. Verifica 5 multiplicando.\n\nGuía: 6x+9 = 3(2x+3).'},
+{id:'d22a2',name:'Textos informativos',cat:'verbal',dur:30,pri:'media',det:'1. Estructura: intro, desarrollo, cierre.\n2. Lee noticia breve.\n3. Marca tema, idea principal, datos.'},
+{id:'d22a3',name:'Razonamiento lógico',cat:'habmat',dur:15,pri:'media',det:'8 problemas de deducción.'},
+{id:'d22a4',name:'Estructura del átomo',cat:'qui',dur:60,pri:'alta',det:'1. Protón, neutrón, electrón.\n2. Z (núm. atómico) y A (núm. masa).\n3. 10 ejercicios para calcular p, n, e.\n\nGuía: si Z=6, A=12 → p=6, n=6.'}]},
+
+{day:23,phase:2,date:'2026-07-16',dateStr:'Jueves 16 de Julio de 2026',activities:[
+{id:'d23a1',name:'Factor común por agrupación',cat:'mat',dur:90,pri:'alta',det:'1. Agrupa de dos en dos.\n2. Saca factor común en cada grupo.\n3. Factoriza binomio común.\n4. 15 ejercicios.\n\nGuía: ax+ay+bx+by = a(x+y)+b(x+y) = (a+b)(x+y).'},
+{id:'d23a2',name:'Antónimos y contexto',cat:'verbal',dur:30,pri:'media',det:'1. 20 ejercicios: significado opuesto o por contexto.\n2. Justifica 5 con pistas del texto.'},
+{id:'d23a3',name:'Series con color y posición',cat:'habmat',dur:15,pri:'media',det:'5 ejercicios visuales.'},
+{id:'d23a4',name:'Biodiversidad y clasificación',cat:'bio',dur:60,pri:'alta',det:'1. Importancia y amenazas.\n2. 5 reinos: Monera, Protista, Fungi, Plantae, Animalia.\n3. Taxonomía: dominio→reino→filo→clase→orden→familia→género→especie.\n4. Clasifica 5 organismos hasta reino.'}]},
+
+{day:24,phase:2,date:'2026-07-17',dateStr:'Viernes 17 de Julio de 2026',activities:[
+{id:'d24a1',name:'Factorización: diferencia de cuadrados',cat:'mat',dur:90,pri:'alta',det:'1. a²-b² = (a+b)(a-b).\n2. Identifica cuadrados perfectos.\n3. 20 ejercicios.\n4. Verifica 5.\n\nGuía: x²-16 = (x+4)(x-4), 9a²-25=?'},
+{id:'d24a2',name:'Analogías de función',cat:'verbal',dur:30,pri:'media',det:'1. 15 analogías.\n2. Tipo de relación.\n\nEjemplo: tijeras:cortar :: lápiz:escribir.'},
+{id:'d24a3',name:'Sucesiones con restas y divisiones',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones.'},
+{id:'d24a4',name:'Sismicidad y vulcanismo',cat:'geo',dur:60,pri:'alta',det:'1. Sismo, epicentro, hipocentro, Richter.\n2. Magma vs lava.\n3. Tipos de volcanes y Cinturón de Fuego.\n4. Mapa conceptual causas/consecuencias.'}]},
+
+{day:25,phase:2,date:'2026-07-20',dateStr:'Lunes 20 de Julio de 2026',activities:[
+{id:'d25a1',name:'Trinomio cuadrado perfecto',cat:'mat',dur:90,pri:'alta',det:'1. Reconoce a²+2ab+b² y a²-2ab+b².\n2. 20 ejercicios.\n3. Explica por qué SÍ/NO es TCP.\n\nGuía: x²+6x+9 = (x+3)².'},
+{id:'d25a2',name:'Idea principal y detalles',cat:'verbal',dur:30,pri:'media',det:'1. Lee texto de 300 palabras.\n2. Subraya idea principal y detalles.\n3. 5 preguntas.'},
+{id:'d25a3',name:'Rotación de figuras 3D',cat:'habmat',dur:15,pri:'media',det:'5 ejercicios.'},
+{id:'d25a4',name:'Isótopos e iones',cat:'qui',dur:60,pri:'alta',det:'1. Isótopo, catión, anión.\n2. Compara C-12 y C-14.\n3. 10 ejercicios de p, n, e en átomos e iones.'}]},
+
+{day:26,phase:2,date:'2026-07-21',dateStr:'Martes 21 de Julio de 2026',activities:[
+{id:'d26a1',name:'Factorización: x²+bx+c',cat:'mat',dur:90,pri:'alta',det:'1. Busca dos números que multipliquen c y sumen b.\n2. 20 trinomios.\n3. Verifica 5 multiplicando.\n\nGuía: x²+5x+6 = (x+2)(x+3).'},
+{id:'d26a2',name:'Ortografía avanzada',cat:'verbal',dur:30,pri:'media',det:'1. j, ge/gi, x, cc, h intermedia.\n2. Completa 20 palabras.\n3. 5 reglas o pistas de uso.'},
+{id:'d26a3',name:'Orden y proporción',cat:'habmat',dur:15,pri:'media',det:'8 problemas de comparación y proporción.'},
+{id:'d26a4',name:'Estados de la materia y cambios',cat:'fis',dur:60,pri:'alta',det:'1. Sólido, líquido, gas, plasma.\n2. Fusión, evaporación, condensación, solidificación, sublimación.\n3. Diagrama de cambios.\n4. Clasifica 10 ejemplos.'}]},
+
+{day:27,phase:2,date:'2026-07-22',dateStr:'Miércoles 22 de Julio de 2026',activities:[
+{id:'d27a1',name:'Repaso de factorización',cat:'mat',dur:90,pri:'alta',det:'1. Tabla para elegir método.\n2. 20 ejercicios mixtos.\n3. Clasifica método usado.'},
+{id:'d27a2',name:'Figuras retóricas en poemas',cat:'verbal',dur:30,pri:'media',det:'1. Analiza 2 poemas.\n2. Identifica figuras.\n3. Marca rima consonante/asonante.\n4. Cuenta sílabas de 4 versos.'},
+{id:'d27a3',name:'Transformaciones simultáneas',cat:'habmat',dur:15,pri:'media',det:'5 series complejas.'},
+{id:'d27a4',name:'Civilizaciones mesoamericanas',cat:'hist',dur:60,pri:'alta',det:'1. Olmecas, Mayas, Teotihuacanos, Mexicas.\n2. Tabla: ubicación, aportes, organización, cultura.\n3. Línea del tiempo.\n4. 8 preguntas.'}]},
+
+{day:28,phase:2,date:'2026-07-23',dateStr:'Jueves 23 de Julio de 2026',activities:[
+{id:'d28a1',name:'Ángulos',cat:'mat',dur:90,pri:'alta',det:'1. Agudo, recto, obtuso, llano, completo.\n2. Complementarios y suplementarios.\n3. 20 ejercicios de cálculo.\n4. Dibuja 5 ejemplos.'},
+{id:'d28a2',name:'Estructura de ensayo',cat:'verbal',dur:30,pri:'media',det:'1. Intro, desarrollo, conclusión.\n2. Identifica tesis, argumentos, cierre en texto.\n3. Esquema para ensayo de 3 párrafos.'},
+{id:'d28a3',name:'Patrones con exponentes',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones.\nEjemplo: 2,4,16,256,___ → cada término es el cuadrado del anterior.'},
+{id:'d28a4',name:'Aparato digestivo',cat:'bio',dur:60,pri:'alta',det:'1. Dibuja: boca, esófago, estómago, intestinos.\n2. Digestión mecánica y química.\n3. Absorción de nutrientes y agua.\n4. 8 preguntas.'}]},
+
+{day:29,phase:2,date:'2026-07-24',dateStr:'Viernes 24 de Julio de 2026',activities:[
+{id:'d29a1',name:'Cuadriláteros: perímetro y área',cat:'mat',dur:90,pri:'alta',det:'1. Cuadrado, rectángulo, rombo, trapecio, paralelogramo.\n2. Fórmulas P y A.\n3. 20 problemas.\n4. Dibuja cada figura.'},
+{id:'d29a2',name:'Reglas de acentuación',cat:'verbal',dur:30,pri:'media',det:'1. Agudas, graves, esdrújulas, sobreesdrújulas.\n2. Acentúa 30 palabras.\n3. 5 casos especiales.'},
+{id:'d29a3',name:'Perspectivas',cat:'habmat',dur:15,pri:'media',det:'5 ejercicios de vistas.'},
+{id:'d29a4',name:'Configuración electrónica y Lewis',cat:'qui',dur:60,pri:'alta',det:'1. Niveles K, L, M, N.\n2. Regla del octeto.\n3. Lewis para 8 elementos.\n4. 5 configuraciones básicas.'}]},
+
+{day:30,phase:2,date:'2026-07-27',dateStr:'Lunes 27 de Julio de 2026',activities:[
+{id:'d30a1',name:'Teorema de Pitágoras',cat:'mat',dur:90,pri:'alta',det:'1. a²+b²=c².\n2. Identifica hipotenusa y catetos.\n3. 20 problemas (hipotenusa o cateto).\n4. Verifica unidades y dibujos.\n\nGuía: a=3, b=4 → c=5.'},
+{id:'d30a2',name:'Verbos y tiempos verbales',cat:'verbal',dur:30,pri:'media',det:'1. Presente, pasado, futuro.\n2. Pretérito vs imperfecto.\n3. Conjuga 10 verbos en 4 tiempos.'},
+{id:'d30a3',name:'Analogías de función',cat:'habmat',dur:15,pri:'media',det:'10 analogías.'},
+{id:'d30a4',name:'Movimiento: trayectoria y velocidad',cat:'fis',dur:60,pri:'alta',det:'1. Trayectoria vs desplazamiento.\n2. Rapidez vs velocidad.\n3. Aceleración.\n4. 10 problemas v=d/t.'}]},
+
+{day:31,phase:2,date:'2026-07-28',dateStr:'Martes 28 de Julio de 2026',activities:[
+{id:'d31a1',name:'Semejanza de triángulos',cat:'mat',dur:90,pri:'alta',det:'1. Criterios AAA, LAL, LLL.\n2. 15 ejercicios de lados proporcionales.\n3. Dibuja 2 triángulos semejantes con razón.\n\nGuía: 3-4-5 es semejante a 6-8-10.'},
+{id:'d31a2',name:'Signos de puntuación II',cat:'esp',dur:30,pri:'alta',det:'Interrogación, exclamación, paréntesis, corchetes, comillas, raya, guion.\n1. Función de cada uno.\n2. 2 ejemplos por signo.\n3. Puntúa diálogo con raya y signos.\n4. Guion corto vs raya.'},
+{id:'d31a3',name:'Rotaciones 90°, 180°, 270°',cat:'habmat',dur:15,pri:'media',det:'5 ejercicios visuales.'},
+{id:'d31a4',name:'México prehispánico y Conquista',cat:'hist',dur:60,pri:'alta',det:'1. Repaso Mesoamérica y Mexicas.\n2. Cortés, alianzas indígenas, caída Tenochtitlán 1521.\n3. Línea del tiempo 1519-1521.\n4. 8 preguntas.'}]},
+
+{day:32,phase:2,date:'2026-07-29',dateStr:'Miércoles 29 de Julio de 2026',activities:[
+{id:'d32a1',name:'Congruencia de triángulos',cat:'mat',dur:90,pri:'alta',det:'1. Criterios LLL, LAL, ALA.\n2. Semejanza vs congruencia.\n3. 15 ejercicios de identificación.\n4. Dibuja 3 pares congruentes.'},
+{id:'d32a2',name:'Antonimia y contexto',cat:'verbal',dur:30,pri:'media',det:'1. Lee 10 oraciones, deduce significado.\n2. Elige opuesto correcto en 10 ejercicios.\n3. Justifica 5.'},
+{id:'d32a3',name:'Problemas con información combinada',cat:'habmat',dur:15,pri:'media',det:'5 problemas lógicos.'},
+{id:'d32a4',name:'Gobierno de México',cat:'civ',dur:60,pri:'alta',det:'1. República, democracia, federalismo, representación.\n2. División de poderes: Ejecutivo, Legislativo, Judicial.\n3. Cuadro con funciones.\n4. 8 preguntas.'}]},
+
+{day:33,phase:2,date:'2026-07-30',dateStr:'Jueves 30 de Julio de 2026',activities:[
+{id:'d33a1',name:'Razones trigonométricas básicas',cat:'mat',dur:90,pri:'alta',det:'1. Cateto opuesto, adyacente, hipotenusa.\n2. sen=op/hip, cos=ady/hip, tan=op/ady.\n3. 20 ejercicios.'},
+{id:'d33a2',name:'Propósito del autor',cat:'verbal',dur:30,pri:'media',det:'1. Lee 4 fragmentos.\n2. Identifica: informar, persuadir, entretener, argumentar.\n3. Justifica.'},
+{id:'d33a3',name:'Sucesiones factoriales',cat:'habmat',dur:15,pri:'media',det:'8 sucesiones.\nEjemplo: 1,2,6,24,120,___'},
+{id:'d33a4',name:'Tabla periódica',cat:'qui',dur:60,pri:'alta',det:'1. Grupos y periodos.\n2. Metales, no metales, metaloides.\n3. Ubica: H, He, C, N, O, Na, Cl, Fe, Cu, Zn.\n4. 10 fichas de elementos.'}]},
+
+{day:34,phase:2,date:'2026-07-31',dateStr:'Viernes 31 de Julio de 2026',activities:[
+{id:'d34a1',name:'Trigonometría: 30°, 45°, 60°',cat:'mat',dur:90,pri:'alta',det:'1. Memoriza valores notables.\n2. Tabla sen/cos/tan para 30°, 45°, 60°.\n3. 15 ejercicios con valores exactos.'},
+{id:'d34a2',name:'Texto argumentativo',cat:'verbal',dur:30,pri:'media',det:'1. Tesis, premisas, argumentos, conclusión.\n2. Marca cada parte en texto corto.\n3. Escribe 3 argumentos sobre un tema.'},
+{id:'d34a3',name:'Problemas con proporciones',cat:'habmat',dur:15,pri:'media',det:'5 problemas.'},
+{id:'d34a4',name:'Aparato respiratorio',cat:'bio',dur:60,pri:'alta',det:'1. Dibuja: fosas, faringe, laringe, tráquea, bronquios, pulmones, alvéolos.\n2. Intercambio de gases.\n3. Respiración celular: O₂+glucosa→CO₂+H₂O+E.\n4. 8 preguntas.'}]},
+
+{day:35,phase:2,date:'2026-08-03',dateStr:'Lunes 3 de Agosto de 2026',activities:[
+{id:'d35a1',name:'Resolución de triángulos rectángulos',cat:'mat',dur:90,pri:'alta',det:'1. Decide sen, cos o tan según datos.\n2. 15 problemas con un ángulo y un lado.\n3. Dibuja triángulo en cada.\n\nGuía: sen30°=op/hip, si hip=10, op=5.'},
+{id:'d35a2',name:'Uso de mayúsculas',cat:'verbal',dur:30,pri:'media',det:'1. Inicial, nombres propios, títulos, instituciones, siglas.\n2. Corrige 20 errores.\n3. 5 reglas con ejemplos.'},
+{id:'d35a3',name:'Simetría, rotación y reflexión',cat:'habmat',dur:15,pri:'media',det:'5 ejercicios visuales.'},
+{id:'d35a4',name:'Leyes de Newton',cat:'fis',dur:60,pri:'alta',det:'1. 1ª ley: inercia.\n2. 2ª ley: F=m·a.\n3. 3ª ley: acción-reacción.\n4. 8 problemas F=m·a.\n5. 3 ejemplos cotidianos por ley.'}]},
+
+{day:36,phase:2,date:'2026-08-04',dateStr:'Martes 4 de Agosto de 2026',activities:[
+{id:'d36a1',name:'Razón, proporción y regla de tres simple',cat:'mat',dur:90,pri:'alta',det:'1. Razón = comparación por división.\n2. Proporción = igualdad de razones.\n3. 20 ejercicios regla de tres simple.\n\nGuía: 3 lápices=$15, 7 lápices=? → 3/15=7/x → x=35.'},
+{id:'d36a2',name:'Complemento indirecto II',cat:'esp',dur:30,pri:'alta',det:'1. Analiza 15 oraciones con CI.\n2. Sustituye por le/les.\n3. Cambio a "se" junto a lo/la/los/las.\n\nEjemplo: Le di el libro a Ana → Se lo di.'},
+{id:'d36a3',name:'Sucesiones cuadráticas',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones.\nEjemplo: 1,4,9,16,25,___ → cuadrados perfectos.'},
+{id:'d36a4',name:'Edad Media e Islam',cat:'hist',dur:60,pri:'alta',det:'1. Feudalismo: rey, señores, vasallos, siervos.\n2. Cruzadas.\n3. Mahoma, Corán, expansión del Islam.\n4. Aportes culturales y científicos.'}]},
+
+{day:37,phase:2,date:'2026-08-05',dateStr:'Miércoles 5 de Agosto de 2026',activities:[
+{id:'d37a1',name:'Regla de tres compuesta',cat:'mat',dur:90,pri:'alta',det:'1. Identifica relación directa o inversa.\n2. 15 problemas con 3+ magnitudes.\n3. Explica cada planteamiento.\n\nGuía: 4 trabajadores en 6 días, 8 trabajadores tardan menos.'},
+{id:'d37a2',name:'Análisis completo de texto',cat:'verbal',dur:30,pri:'media',det:'1. Lee texto de 300 palabras.\n2. Idea principal, secundarias, intención.\n3. Resumen de 8 líneas.'},
+{id:'d37a3',name:'Analogías de causa y proporción',cat:'habmat',dur:15,pri:'media',det:'10 analogías.'},
+{id:'d37a4',name:'Valencia y número de oxidación',cat:'qui',dur:60,pri:'alta',det:'1. Define valencia y número de oxidación.\n2. Reglas para H, O, alcalinos, halógenos.\n3. 15 ejercicios.'}]},
+
+{day:38,phase:2,date:'2026-08-06',dateStr:'Jueves 6 de Agosto de 2026',activities:[
+{id:'d38a1',name:'Proporcionalidad directa e inversa',cat:'mat',dur:90,pri:'alta',det:'1. Directa: aumenta una, aumenta la otra.\n2. Inversa: aumenta una, disminuye la otra.\n3. 10 directos + 10 inversos.\n4. Grafica un ejemplo de cada.'},
+{id:'d38a2',name:'Redacción de oraciones claras',cat:'verbal',dur:30,pri:'media',det:'1. 10 oraciones con sujeto, verbo, complemento.\n2. Concordancia género, número, tiempo.\n3. Reescribe 5 confusas.'},
+{id:'d38a3',name:'Problemas de mezcla',cat:'habmat',dur:15,pri:'media',det:'5 problemas.'},
+{id:'d38a4',name:'Atmósfera y clima',cat:'geo',dur:60,pri:'alta',det:'1. Capas: troposfera, estratosfera, mesosfera, termosfera, exosfera.\n2. Composición: N, O, Ar, otros.\n3. Temperatura, presión, humedad, precipitación, viento.\n4. 8 preguntas.'}]},
+
+{day:39,phase:2,date:'2026-08-07',dateStr:'Viernes 7 de Agosto de 2026',activities:[
+{id:'d39a1',name:'Porcentajes, descuentos, IVA, interés',cat:'mat',dur:90,pri:'alta',det:'1. Porcentaje = parte de 100.\n2. 10 % directo, 5 descuentos, 5 IVA, 5 interés simple I=C·r·t.\n\nGuía: 15% de 200 = 30; $500 con 20% descuento = $400.'},
+{id:'d39a2',name:'Búsqueda rápida de información',cat:'verbal',dur:30,pri:'media',det:'1. Lee 2 textos y localiza datos específicos.\n2. 10 preguntas de información puntual.\n3. Subraya dónde encontraste cada respuesta.'},
+{id:'d39a3',name:'Series geométricas',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones.\nEjemplo: 2,6,18,54,___ → ×3'},
+{id:'d39a4',name:'Aparato circulatorio + sistema inmune',cat:'bio',dur:60,pri:'alta',det:'1. Dibuja corazón 4 cámaras.\n2. Arterias, venas, capilares.\n3. Componentes de la sangre.\n4. Barreras, leucocitos, macrófagos, memoria inmune.'}]},
+
+{day:40,phase:2,date:'2026-08-10',dateStr:'Lunes 10 de Agosto de 2026',activities:[
+{id:'d40a1',name:'Repaso general Fases 1-2',cat:'mat',dur:90,pri:'alta',det:'1. 30 ejercicios mezclados: signos, fracciones, potencias, raíces, álgebra, ecuaciones, productos, factorización, geometría, trigonometría, proporciones, porcentajes.\n2. Cronometra 70 min.\n3. 20 min para corregir.\n4. Lista de 5 temas más débiles.'},
+{id:'d40a2',name:'Práctica completa tipo examen',cat:'verbal',dur:30,pri:'alta',det:'16 preguntas: antónimos, analogías, comprensión, conectores, vocabulario por contexto.'},
+{id:'d40a3',name:'Práctica completa tipo examen',cat:'habmat',dur:15,pri:'alta',det:'16 preguntas: sucesiones, series, espacial, razonamiento.'},
+{id:'d40a4',name:'Renacimiento, Reforma, Contrarreforma',cat:'hist',dur:60,pri:'alta',det:'1. Leonardo, Miguel Ángel, Copérnico, Galileo, Gutenberg.\n2. Humanismo.\n3. Lutero, 95 tesis, Contrarreforma.\n4. Línea del tiempo con 8 eventos.'}]},
+
+{day:41,phase:3,date:'2026-08-11',dateStr:'Martes 11 de Agosto de 2026',activities:[
+{id:'d41a1',name:'Ecuaciones de 2do grado: fórmula general',cat:'mat',dur:90,pri:'alta',det:'1. Forma ax²+bx+c=0.\n2. Fórmula: x = (-b±√(b²-4ac))/2a.\n3. Calcula discriminante en 10.\n4. Resuelve 10 ecuaciones completas.'},
+{id:'d41a2',name:'Analogías avanzadas',cat:'verbal',dur:30,pri:'media',det:'20 analogías. Justifica 10.'},
+{id:'d41a3',name:'Sucesiones con fracciones/raíces',cat:'habmat',dur:15,pri:'media',det:'8 sucesiones complejas.'},
+{id:'d41a4',name:'Enlaces químicos',cat:'qui',dur:60,pri:'alta',det:'1. Iónico, covalente, metálico.\n2. Covalente polar vs no polar.\n3. Clasifica 15 sustancias.\n4. Lewis de 5 moléculas.'}]},
+
+{day:42,phase:3,date:'2026-08-12',dateStr:'Miércoles 12 de Agosto de 2026',activities:[
+{id:'d42a1',name:'Cuadráticas por factorización',cat:'mat',dur:90,pri:'alta',det:'1. Factoriza el trinomio.\n2. Producto cero.\n3. 20 ecuaciones.\n4. Verifica 5.\n\nGuía: x²+5x+6=0 → (x+2)(x+3)=0 → x=-2,-3.'},
+{id:'d42a2',name:'Lectura crítica',cat:'verbal',dur:30,pri:'media',det:'1. Lee texto de opinión.\n2. Identifica sesgo, postura, argumentos débiles.\n3. 6 preguntas.'},
+{id:'d42a3',name:'Figuras superpuestas',cat:'habmat',dur:15,pri:'media',det:'5 series visuales de suma/resta de figuras.'},
+{id:'d42a4',name:'MRU',cat:'fis',dur:60,pri:'alta',det:'1. Movimiento rectilíneo uniforme.\n2. d=v·t.\n3. 15 problemas variando d, v o t.\n\nGuía: 60 km/h × 2h = 120 km.'}]},
+
+{day:43,phase:3,date:'2026-08-13',dateStr:'Jueves 13 de Agosto de 2026',activities:[
+{id:'d43a1',name:'Cuadráticas: completar trinomio',cat:'mat',dur:90,pri:'alta',det:'1. Mitad del coef. de x, luego al cuadrado.\n2. Completa 10 trinomios.\n3. 10 ecuaciones por este método.'},
+{id:'d43a2',name:'Antónimos y matices',cat:'verbal',dur:30,pri:'media',det:'1. 15 ejercicios.\n2. Diferencia antónimo total vs por contexto.\n3. 5 oraciones donde contexto cambia la respuesta.'},
+{id:'d43a3',name:'Desplegados de sólidos',cat:'habmat',dur:15,pri:'media',det:'5 desplegados de cubos, pirámides, cilindros.'},
+{id:'d43a4',name:'Independencia de México',cat:'hist',dur:60,pri:'alta',det:'1. Hidalgo, Morelos, Guerrero, Iturbide.\n2. Línea del tiempo 1810-1821.\n3. Plan de Iguala y consumación 27 sept 1821.\n4. 10 preguntas.'}]},
+
+{day:44,phase:3,date:'2026-08-14',dateStr:'Viernes 14 de Agosto de 2026',activities:[
+{id:'d44a1',name:'Sistemas 2x2: sustitución',cat:'mat',dur:90,pri:'alta',det:'1. Despeja una variable.\n2. Sustituye en la otra.\n3. 15 sistemas.\n4. Verifica 5 pares.\n\nGuía: 2x+y=7; x+y=5.'},
+{id:'d44a2',name:'Comprensión: dos textos',cat:'verbal',dur:30,pri:'media',det:'Lee 2 textos. Responde 10 preguntas (idea principal, inferencia, intención).'},
+{id:'d44a3',name:'Lógica proposicional básica',cat:'habmat',dur:15,pri:'media',det:'8 ejercicios "si... entonces", negación y conclusión.'},
+{id:'d44a4',name:'Fórmulas y nomenclatura',cat:'qui',dur:60,pri:'alta',det:'1. Molecular, desarrollada, semidesarrollada.\n2. IUPAC, Stock, tradicional.\n3. Prefijos mono-, di-, tri-, tetra-, penta-.\n4. Nombra 15 compuestos.'}]},
+
+{day:45,phase:3,date:'2026-08-17',dateStr:'Lunes 17 de Agosto de 2026',activities:[
+{id:'d45a1',name:'Sistemas 2x2: igualación',cat:'mat',dur:90,pri:'alta',det:'1. Despeja misma variable en ambas.\n2. Iguala expresiones.\n3. 15 sistemas.\n4. Verifica 5.'},
+{id:'d45a2',name:'Texto científico',cat:'verbal',dur:30,pri:'media',det:'1. Estructura: resumen, intro, método, resultados, discusión.\n2. Lee texto corto.\n3. Identifica tecnicismos, objetivo, conclusión.'},
+{id:'d45a3',name:'Patrones exponenciales/factoriales',cat:'habmat',dur:15,pri:'media',det:'10 sucesiones.'},
+{id:'d45a4',name:'Sistema nervioso y endocrino',cat:'bio',dur:60,pri:'alta',det:'1. Neurona: dendritas, cuerpo, axón, sinapsis.\n2. SNC vs SNP.\n3. Respuesta refleja.\n4. Glándulas endocrinas y hormonas principales.'}]},
+
+{day:46,phase:3,date:'2026-08-18',dateStr:'Martes 18 de Agosto de 2026',activities:[
+{id:'d46a1',name:'Sistemas 2x2: suma y resta',cat:'mat',dur:90,pri:'alta',det:'1. Multiplica ecuaciones para eliminar variable.\n2. 15 sistemas.\n3. Verifica 5.'},
+{id:'d46a2',name:'Texto periodístico',cat:'verbal',dur:30,pri:'media',det:'1. Estructura: qué, quién, cuándo, dónde, cómo, por qué.\n2. Analiza noticia.\n3. Escribe noticia breve de 8 líneas.'},
+{id:'d46a3',name:'Problemas con sistemas',cat:'habmat',dur:15,pri:'media',det:'5 problemas planteados con 2 ecuaciones.'},
+{id:'d46a4',name:'MRUA',cat:'fis',dur:60,pri:'alta',det:'1. Aceleración constante.\n2. Fórmulas: v=v₀+at; d=v₀t+½at²; v²=v₀²+2ad.\n3. 10 problemas.'}]},
+
+{day:47,phase:3,date:'2026-08-19',dateStr:'Miércoles 19 de Agosto de 2026',activities:[
+{id:'d47a1',name:'Sistemas 2x2: método gráfico',cat:'mat',dur:90,pri:'alta',det:'1. Convierte a y=mx+b.\n2. Grafica 8 sistemas.\n3. Identifica intersección.\n4. Comprueba sustituyendo.'},
+{id:'d47a2',name:'Ensayo con evidencia',cat:'verbal',dur:30,pri:'media',det:'1. Tesis sobre tema sencillo.\n2. 2 argumentos + 1 evidencia por argumento.\n3. Conclusión.'},
+{id:'d47a3',name:'Plano cartesiano',cat:'habmat',dur:15,pri:'media',det:'Ubica 15 puntos. Identifica cuadrantes.'},
+{id:'d47a4',name:'Óxidos e hidróxidos',cat:'qui',dur:60,pri:'alta',det:'1. Óxido básico, ácido, anfótero.\n2. Hidróxidos: metal+OH.\n3. Nombra 15: Na₂O, SO₂, NaOH, Ca(OH)₂, etc.'}]},
+
+{day:48,phase:3,date:'2026-08-20',dateStr:'Jueves 20 de Agosto de 2026',activities:[
+{id:'d48a1',name:'Repaso sistemas de ecuaciones',cat:'mat',dur:90,pri:'alta',det:'1. 12 sistemas: 4 sustitución, 4 igualación, 4 eliminación.\n2. Elige método más rápido.\n3. Justifica elección.'},
+{id:'d48a2',name:'Examen verbal parcial',cat:'verbal',dur:30,pri:'alta',det:'16 preguntas cronometradas: comprensión, analogías, antónimos, conectores, propósito.'},
+{id:'d48a3',name:'Gráficas estadísticas',cat:'habmat',dur:15,pri:'media',det:'Interpreta 5 gráficas (barras, líneas, circulares).'},
+{id:'d48a4',name:'Independencia de las 13 Colonias',cat:'hist',dur:60,pri:'alta',det:'1. Causas: impuestos sin representación.\n2. Guerra 1775-1783 + Declaración 1776.\n3. Ficha George Washington.\n4. 8 preguntas.'}]},
+
+{day:49,phase:3,date:'2026-08-21',dateStr:'Viernes 21 de Agosto de 2026',activities:[
+{id:'d49a1',name:'Funciones lineales',cat:'mat',dur:90,pri:'alta',det:'1. y=mx+b.\n2. Pendiente m, ordenada b.\n3. 10 tablas de valores.\n4. Grafica 10 rectas con 2 puntos.\n\nGuía: y=2x+1: x=0→y=1, x=1→y=3.'},
+{id:'d49a2',name:'Análisis literario',cat:'verbal',dur:30,pri:'media',det:'1. Lee cuento corto.\n2. Tema, personajes, conflicto, resolución.\n3. Resumen 8 líneas.'},
+{id:'d49a3',name:'Sucesiones y series intensivas',cat:'habmat',dur:15,pri:'media',det:'15 ejercicios.'},
+{id:'d49a4',name:'Caída libre y tiro vertical',cat:'fis',dur:60,pri:'alta',det:'1. g=9.8 m/s².\n2. 10 problemas de caída libre.\n3. Tiro vertical hacia arriba.'}]},
+
+{day:50,phase:3,date:'2026-08-24',dateStr:'Lunes 24 de Agosto de 2026',activities:[
+{id:'d50a1',name:'Funciones cuadráticas',cat:'mat',dur:90,pri:'alta',det:'1. y=ax²+bx+c.\n2. Parábola, vértice, cortes.\n3. 5 tablas de valores.\n4. Grafica 5 parábolas.\n5. Relación cortes con eje X y ecuaciones.'},
+{id:'d50a2',name:'Signos puntuación III: auxiliares + repaso',cat:'esp',dur:30,pri:'alta',det:'Puntos suspensivos, diéresis, apóstrofo, barra, asterisco, llaves + repaso total.\n1. Función y ejemplo de cada signo.\n2. Repasa todos los signos vistos.\n3. Puntúa texto de 15 líneas con 8+ signos diferentes.\n4. 5 cambios de significado por mala puntuación.'},
+{id:'d50a3',name:'Interpretación de funciones',cat:'habmat',dur:15,pri:'media',det:'Interpreta 5 gráficas: pendiente, crecimiento, cortes.'},
+{id:'d50a4',name:'Factores y tipos de clima',cat:'geo',dur:60,pri:'alta',det:'1. Latitud, altitud, cercanía al mar, corrientes, relieve.\n2. Climas: tropical, seco, templado, frío, polar.\n3. Mapa conceptual.\n4. 8 preguntas.'}]},
+
+{day:51,phase:3,date:'2026-08-25',dateStr:'Martes 25 de Agosto de 2026',activities:[
+{id:'d51a1',name:'Desigualdades e inecuaciones',cat:'mat',dur:90,pri:'alta',det:'1. <, >, ≤, ≥.\n2. 20 inecuaciones de 1er grado.\n3. 10 en recta numérica.\n4. Cambiar sentido al × o ÷ por negativo.\n\nGuía: 2x+3<11 → x<4.'},
+{id:'d51a2',name:'Ensayo argumentativo',cat:'verbal',dur:30,pri:'media',det:'1. Elige tema.\n2. Tesis, 2 argumentos, conclusión.\n3. Conectores de causa, contraste, cierre.'},
+{id:'d51a3',name:'Optimización básica',cat:'habmat',dur:15,pri:'media',det:'5 problemas de máximo o mínimo sencillo.'},
+{id:'d51a4',name:'Ácidos, bases y sales',cat:'qui',dur:60,pri:'alta',det:'1. Hidrácidos vs oxiácidos.\n2. Sales neutras, ácidas, básicas.\n3. Neutralización: ácido+base→sal+agua.\n4. Clasifica 15 fórmulas.'}]},
+
+{day:52,phase:3,date:'2026-08-26',dateStr:'Miércoles 26 de Agosto de 2026',activities:[
+{id:'d52a1',name:'Gráficas de movimiento',cat:'mat',dur:90,pri:'alta',det:'1. Posición-tiempo: pendiente = velocidad.\n2. Velocidad-tiempo: área = distancia.\n3. 10 ejercicios de interpretación.\n4. 3 gráficas desde descripción.'},
+{id:'d52a2',name:'Lectura de varias disciplinas',cat:'verbal',dur:30,pri:'media',det:'Lee textos breves de ciencia, historia, opinión. Responde 9 preguntas.'},
+{id:'d52a3',name:'Funciones lineales vs cuadráticas',cat:'habmat',dur:15,pri:'media',det:'Identifica si 8 gráficas son lineales o cuadráticas.'},
+{id:'d52a4',name:'Revolución Industrial',cat:'hist',dur:60,pri:'alta',det:'1. Primera vs segunda Revolución Industrial.\n2. Vapor, carbón, fábricas, electricidad, petróleo, producción en masa.\n3. Urbanización, clase obrera, migración.\n4. 8 preguntas.'}]},
+
+{day:53,phase:3,date:'2026-08-27',dateStr:'Jueves 27 de Agosto de 2026',activities:[
+{id:'d53a1',name:'Repaso funciones lineales/cuadráticas',cat:'mat',dur:90,pri:'alta',det:'1. 10 ejercicios función lineal.\n2. 10 cuadrática.\n3. 5 problemas aplicación real.\n4. Corrige errores + reglas clave.'},
+{id:'d53a2',name:'Vocabulario académico',cat:'verbal',dur:30,pri:'media',det:'1. Conectores: no obstante, por consiguiente, cabe destacar, en efecto, por ende, sin embargo.\n2. Completa 15 oraciones.\n3. Párrafo con 5 expresiones.'},
+{id:'d53a3',name:'Examen parcial cronometrado',cat:'habmat',dur:15,pri:'alta',det:'16 preguntas en max 30 min (puedes dividir).'},
+{id:'d53a4',name:'Reproducción, mitosis y meiosis',cat:'bio',dur:60,pri:'alta',det:'1. Sexual vs asexual.\n2. Gametos, fecundación, cigoto, embrión.\n3. Mitosis: profase, metafase, anafase, telofase, citocinesis.\n4. Meiosis: mitad de cromosomas.\n5. Cuadro mitosis vs meiosis.'}]},
+
+{day:54,phase:3,date:'2026-08-28',dateStr:'Viernes 28 de Agosto de 2026',activities:[
+{id:'d54a1',name:'Tablas de frecuencia y gráficas',cat:'mat',dur:90,pri:'alta',det:'1. Datos agrupados vs no agrupados.\n2. Frecuencia absoluta y acumulada.\n3. 5 tablas completas.\n4. 3 gráficas: barras, circular, histograma.'},
+{id:'d54a2',name:'Corrección de estilo',cat:'verbal',dur:30,pri:'media',det:'1. Corrige texto con errores de conectores, repeticiones, signos.\n2. Señala 10 cambios.\n3. Explica mejoras.'},
+{id:'d54a3',name:'Media, mediana, moda y rango',cat:'habmat',dur:15,pri:'media',det:'Calcula medidas en 5 conjuntos de datos.'},
+{id:'d54a4',name:'Trabajo mecánico y potencia',cat:'fis',dur:60,pri:'alta',det:'1. W=F·d.\n2. P=W/t.\n3. 10 problemas de trabajo.\n4. 5 de potencia.\n\nGuía: F=10N, d=5m → W=50J.'}]},
+
+{day:55,phase:3,date:'2026-08-31',dateStr:'Lunes 31 de Agosto de 2026',activities:[
+{id:'d55a1',name:'Probabilidad clásica',cat:'mat',dur:90,pri:'alta',det:'1. Espacio muestral.\n2. P = casos favorables / posibles.\n3. 20 ejercicios con dados, monedas, cartas.\n4. Resultados como fracción simplificada.\n\nGuía: dado P(5)=1/6.'},
+{id:'d55a2',name:'Informativo vs argumentativo',cat:'verbal',dur:30,pri:'media',det:'1. Compara propósito, estructura, lenguaje.\n2. Clasifica 8 fragmentos.\n3. Justifica 4.'},
+{id:'d55a3',name:'Permutaciones y combinaciones',cat:'habmat',dur:15,pri:'media',det:'1. Diferencia si orden importa.\n2. 5 ejercicios básicos.'},
+{id:'d55a4',name:'Leyes ponderales y mol',cat:'qui',dur:60,pri:'alta',det:'1. Ley de conservación de la masa.\n2. Ley de proporciones definidas.\n3. Mol y Avogadro: 6.02×10²³.\n4. 8 ejercicios conceptuales.'}]},
+
+{day:56,phase:3,date:'2026-09-01',dateStr:'Martes 1 de Septiembre de 2026',activities:[
+{id:'d56a1',name:'Problemas de probabilidad',cat:'mat',dur:90,pri:'alta',det:'1. 10 problemas con dados.\n2. 5 con monedas.\n3. 5 con cartas o cotidianas.\n4. Explica espacio muestral.\n\nGuía: P(par en dado)=3/6=1/2.'},
+{id:'d56a2',name:'Lecturas mixtas',cat:'verbal',dur:30,pri:'media',det:'10 preguntas sobre textos de ciencia e historia.'},
+{id:'d56a3',name:'Práctica de permutaciones',cat:'habmat',dur:15,pri:'media',det:'8 ejercicios marcando si el orden importa.'},
+{id:'d56a4',name:'Energía',cat:'fis',dur:60,pri:'alta',det:'1. Cinética: Ek=½mv².\n2. Potencial: Ep=mgh.\n3. Conservación de energía.\n4. 10 problemas.'}]},
+
+{day:57,phase:3,date:'2026-09-02',dateStr:'Miércoles 2 de Septiembre de 2026',activities:[
+{id:'d57a1',name:'Simulacro matemáticas + habilidades',cat:'mat',dur:90,pri:'alta',det:'1. 32 preguntas (16 mat + 16 hab mat).\n2. Cronometra 60 min.\n3. 30 min para corregir.\n4. Tabla de errores: tema, error, corrección, cómo evitar.'},
+{id:'d57a2',name:'Revisión del simulacro',cat:'verbal',dur:30,pri:'alta',det:'Revisa comprensión, conectores, analogías, vocabulario. Anota temas débiles.'},
+{id:'d57a3',name:'Análisis de errores',cat:'habmat',dur:15,pri:'media',det:'Repite 5 ejercicios fallados o parecidos.'},
+{id:'d57a4',name:'Masa molar y estequiometría',cat:'qui',dur:60,pri:'alta',det:'1. Masa molar.\n2. Conversión mol-gramo.\n3. Balancea 5 ecuaciones.\n4. 5 problemas básicos.\n\nEjemplo: 2H₂+O₂→2H₂O.'}]},
+
+{day:58,phase:3,date:'2026-09-03',dateStr:'Jueves 3 de Septiembre de 2026',activities:[
+{id:'d58a1',name:'Repaso de temas fallados',cat:'mat',dur:90,pri:'alta',det:'1. Elige 3 temas con más errores.\n2. Relee ficha de cada uno.\n3. 10 ejercicios por tema.\n4. Reflexión sobre cambios en método.'},
+{id:'d58a2',name:'Comprensión historia y ciencia',cat:'verbal',dur:30,pri:'media',det:'1. Lee texto histórico y científico.\n2. Tesis, evidencia, datos, conclusión.\n3. 8 preguntas.'},
+{id:'d58a3',name:'Series y sucesiones intensivas',cat:'habmat',dur:15,pri:'media',det:'20 ejercicios.'},
+{id:'d58a4',name:'Genética básica',cat:'bio',dur:60,pri:'alta',det:'1. ADN, gen, cromosoma.\n2. Leyes de Mendel.\n3. Dominante vs recesivo.\n4. 5 cuadros de Punnett.'}]},
+
+{day:59,phase:3,date:'2026-09-04',dateStr:'Viernes 4 de Septiembre de 2026',activities:[
+{id:'d59a1',name:'Repaso de trigonometría',cat:'mat',dur:90,pri:'alta',det:'1. Sen, cos, tan.\n2. Valores 30°, 45°, 60°.\n3. 20 ejercicios triángulos rectángulos.\n4. Ficha de fórmulas.'},
+{id:'d59a2',name:'Ortografía: errores comunes',cat:'verbal',dur:30,pri:'media',det:'1. Corrige 30 palabras u oraciones.\n2. Clasifica errores.\n3. 10 reglas personales para recordar.'},
+{id:'d59a3',name:'Imaginación espacial intensiva',cat:'habmat',dur:15,pri:'media',det:'10 ejercicios de rotación, vistas, desarrollos.'},
+{id:'d59a4',name:'Revolución Francesa e Ilustración',cat:'hist',dur:60,pri:'alta',det:'1. Causas: desigualdad, deuda, ideas ilustradas.\n2. Toma Bastilla, Terror, Napoleón.\n3. Fichas: Voltaire, Rousseau, Montesquieu, Locke.\n4. 10 preguntas.'}]},
+
+{day:60,phase:3,date:'2026-09-07',dateStr:'Lunes 7 de Septiembre de 2026',activities:[
+{id:'d60a1',name:'Repaso general temas difíciles',cat:'mat',dur:90,pri:'alta',det:'1. 30 ejercicios: cuadráticas, sistemas, funciones, trigonometría.\n2. Cronometra 75 min.\n3. Repite 5 fallados.'},
+{id:'d60a2',name:'Ensayo cronometrado',cat:'verbal',dur:30,pri:'alta',det:'Escribe ensayo completo en 30 min: intro, 3 argumentos, conclusión.'},
+{id:'d60a3',name:'Razonamiento lógico tipo examen',cat:'habmat',dur:15,pri:'media',det:'10 problemas.'},
+{id:'d60a4',name:'Calor y temperatura',cat:'fis',dur:60,pri:'alta',det:'1. Calor vs temperatura.\n2. Celsius, Fahrenheit, Kelvin.\n3. Conversiones: °F=°C·9/5+32; K=°C+273.\n4. Conducción, convección, radiación.\n5. 10 ejercicios.'}]},
+
+{day:61,phase:4,date:'2026-09-08',dateStr:'Martes 8 de Septiembre de 2026',activities:[
+{id:'d61a1',name:'Estadística y probabilidad: repaso',cat:'mat',dur:90,pri:'alta',det:'1. 20 problemas de probabilidad.\n2. 10 ejercicios media, mediana, moda, rango.\n3. Tabla de errores.'},
+{id:'d61a2',name:'Análisis de obra literaria',cat:'verbal',dur:30,pri:'media',det:'1. Tema, personajes, conflicto, resolución, mensaje.\n2. Identifica género.'},
+{id:'d61a3',name:'Sucesiones avanzadas',cat:'habmat',dur:15,pri:'media',det:'15 sucesiones.'},
+{id:'d61a4',name:'Ácidos, bases y pH',cat:'qui',dur:60,pri:'alta',det:'1. Arrhenius y Brønsted-Lowry.\n2. Escala pH: <7 ácido, =7 neutro, >7 básico.\n3. Indicadores: tornasol, fenolftaleína, col morada.\n4. Clasifica 15 sustancias.'}]},
+
+{day:62,phase:4,date:'2026-09-09',dateStr:'Miércoles 9 de Septiembre de 2026',activities:[
+{id:'d62a1',name:'Simulacro 32 preguntas',cat:'mat',dur:90,pri:'alta',det:'1. 16 matemáticas + 16 hab matemática.\n2. Cronometra 45 min EXACTOS.\n3. Calcula % aciertos.\n4. Anota 5 errores más graves.'},
+{id:'d62a2',name:'Revisión de errores',cat:'verbal',dur:30,pri:'alta',det:'Revisa preguntas falladas de comprensión, conectores, analogías, antónimos.'},
+{id:'d62a3',name:'Práctica de temas fallados',cat:'habmat',dur:15,pri:'media',det:'8 ejercicios parecidos a los fallados.'},
+{id:'d62a4',name:'Ondas',cat:'fis',dur:60,pri:'alta',det:'1. Onda = perturbación que transfiere energía.\n2. Transversales vs longitudinales.\n3. Amplitud, frecuencia, longitud, periodo, velocidad.\n4. 10 problemas v=f·λ.'}]},
+
+{day:63,phase:4,date:'2026-09-10',dateStr:'Jueves 10 de Septiembre de 2026',activities:[
+{id:'d63a1',name:'Repaso temas mayor puntaje',cat:'mat',dur:90,pri:'alta',det:'1. Ecuaciones 1er y 2do grado, trigonometría, sistemas, %, proporciones, funciones lineales.\n2. 5 ejercicios por tema.\n3. Marca los que aún cuestan.'},
+{id:'d63a2',name:'Práctica integral cronometrada',cat:'verbal',dur:30,pri:'alta',det:'16 preguntas tipo examen en 30 min.'},
+{id:'d63a3',name:'Series y sucesiones extra',cat:'habmat',dur:15,pri:'media',det:'20 ejercicios.'},
+{id:'d63a4',name:'Recursos naturales y ambiente',cat:'geo',dur:60,pri:'alta',det:'1. Renovables vs no renovables.\n2. Deforestación, desertificación, contaminación, lluvia ácida, calentamiento global.\n3. Desarrollo sustentable.\n4. Mapa conceptual + 10 preguntas.'}]},
+
+{day:64,phase:4,date:'2026-09-11',dateStr:'Viernes 11 de Septiembre de 2026',activities:[
+{id:'d64a1',name:'Simulacro completo mat + habilidades',cat:'mat',dur:90,pri:'alta',det:'1. Simulacro completo.\n2. Cronometra tiempo real.\n3. Identifica temas a repasar.\n4. Lista priorizada: urgente, medio, dominado.'},
+{id:'d64a2',name:'Corrección temas débiles',cat:'verbal',dur:30,pri:'alta',det:'10 preguntas del tema verbal con más errores.'},
+{id:'d64a3',name:'Series + sucesiones + razonamiento',cat:'habmat',dur:15,pri:'media',det:'10 ejercicios mixtos.'},
+{id:'d64a4',name:'Intervención francesa en México',cat:'hist',dur:60,pri:'alta',det:'1. Contexto: deudas, Francia/España/RU.\n2. Por qué Francia se quedó.\n3. Maximiliano, Juárez, resistencia republicana.\n4. Cerro de las Campanas.\n5. 10 preguntas.'}]},
+
+{day:65,phase:4,date:'2026-09-14',dateStr:'Lunes 14 de Septiembre de 2026',activities:[
+{id:'d65a1',name:'Repaso dirigido según simulacros',cat:'mat',dur:90,pri:'alta',det:'1. Elige 2 temas más débiles.\n2. 15 ejercicios por tema.\n3. Repite los fallados.\n4. Ficha: "errores que ya no debo cometer".'},
+{id:'d65a2',name:'Comprensión científica',cat:'verbal',dur:30,pri:'media',det:'Lee texto científico. 8 preguntas: idea principal, datos, inferencias, propósito.'},
+{id:'d65a3',name:'Razonamiento lógico',cat:'habmat',dur:15,pri:'media',det:'10 problemas.'},
+{id:'d65a4',name:'Oxidación y reducción',cat:'qui',dur:60,pri:'alta',det:'1. Oxidación = pérdida de electrones.\n2. Reducción = ganancia.\n3. Ejemplo Fe+O₂→Fe₂O₃.\n4. Aplicaciones: baterías, corrosión, galvanoplastia.\n5. 8 ejercicios.'}]},
+
+{day:66,phase:4,date:'2026-09-15',dateStr:'Martes 15 de Septiembre de 2026',activities:[
+{id:'d66a1',name:'Repaso final de TODOS los temas',cat:'mat',dur:90,pri:'alta',det:'1. 1 ejercicio de cada tipo (signos, fracciones, potencias, raíces, álgebra, ecuaciones, factorización, geometría, trigonometría, proporciones, %, sistemas, funciones, estadística, probabilidad).\n2. Máx 5 min por ejercicio.\n3. Lista express de temas a repasar.'},
+{id:'d66a2',name:'Escritura argumentativa',cat:'verbal',dur:30,pri:'alta',det:'Texto argumentativo de 4 párrafos: tesis, 2 argumentos, conclusión.'},
+{id:'d66a3',name:'Visualización espacial',cat:'habmat',dur:15,pri:'media',det:'10 ejercicios de rotación, simetría, vistas, desarrollos.'},
+{id:'d66a4',name:'Evolución y método científico',cat:'bio',dur:60,pri:'alta',det:'1. Selección natural de Darwin.\n2. Evidencias: fósiles, anatomía, bioquímica, geografía.\n3. Método científico: observación, pregunta, hipótesis, experimentación, análisis, conclusión.\n4. Ejemplo completo de experimento.'}]},
+
+{day:67,phase:4,date:'2026-09-16',dateStr:'Miércoles 16 de Septiembre de 2026',activities:[
+{id:'d67a1',name:'Simulacro final amplio',cat:'mat',dur:90,pri:'alta',det:'1. 64 reactivos mezclados: habilidades, mat, ciencias, hist, geo, cívica.\n2. 2 horas (o divide en bloques).\n3. SIN apuntes.\n4. Tabla de aciertos por materia.'},
+{id:'d67a2',name:'Revisión de resultados',cat:'verbal',dur:30,pri:'alta',det:'Identifica errores de lectura, precipitación, vocabulario, conectores, atención.'},
+{id:'d67a3',name:'Análisis final de errores',cat:'habmat',dur:15,pri:'alta',det:'Plan del último día con 5 puntos más débiles.'},
+{id:'d67a4',name:'Electricidad',cat:'fis',dur:60,pri:'alta',det:'1. Carga + y -.\n2. Electrización: frotamiento, contacto, inducción.\n3. Ley de Coulomb: F=k·q₁·q₂/r².\n4. Campo eléctrico.\n5. 8 ejercicios conceptuales.'}]},
+
+{day:68,phase:4,date:'2026-09-17',dateStr:'Jueves 17 de Septiembre de 2026 - CIERRE 🎓',activities:[
+{id:'d68a1',name:'Repaso inteligente final',cat:'mat',dur:60,pri:'alta',det:'1. Revisa SOLO fichas, errores frecuentes, mapas conceptuales.\n2. NO abras temas nuevos.\n3. Lee fichas de: fórmula general, sistemas, trigonometría, %, proporciones, signos puntuación, CD/CI, leyes Física y Química.\n4. Lista de 20 datos que debes recordar.'},
+{id:'d68a2',name:'Práctica ligera final',cat:'mat',dur:60,pri:'media',det:'1. 12 ejercicios fáciles-medios (NO difíciles) para ganar seguridad.\n2. 2 ecuaciones, 2 sistemas, 2 factorizaciones, 2 %, 2 trigonometría, 2 probabilidad/estadística.\n3. Corrige sin frustrarte.'},
+{id:'d68a3',name:'Velocidad y estrategia',cat:'verbal',dur:45,pri:'alta',det:'1. 8 preguntas verbales + 8 matemáticas.\n2. Practica SALTAR preguntas difíciles.\n3. Marca cuáles dejarías para segunda vuelta.'},
+{id:'d68a4',name:'Estrategia de examen + cierre',cat:'civ',dur:75,pri:'alta',det:'1. Escribe estrategia: primero lo seguro, máx 90 seg por pregunta, marca y regresa, revisa al final.\n2. Prepara materiales: lápices, goma, sacapuntas, ID, comprobante, agua, reloj.\n3. Duerme temprano.\n4. ¡ÉXITO EN TU EXAMEN! 🎓'}]}
+];
+
+const PHASES=[
+{id:0,name:'Fase 0 - Arranque y Bases',days:PLAN_DATA.filter(d=>d.phase===0)},
+{id:1,name:'Fase 1 - Fundamentos',days:PLAN_DATA.filter(d=>d.phase===1)},
+{id:2,name:'Fase 2 - Intermedio',days:PLAN_DATA.filter(d=>d.phase===2)},
+{id:3,name:'Fase 3 - Avanzado',days:PLAN_DATA.filter(d=>d.phase===3)},
+{id:4,name:'Fase 4 - Consolidación Final',days:PLAN_DATA.filter(d=>d.phase===4)}
+];
+
+const TOTAL_ACTIVITIES=PLAN_DATA.reduce((s,d)=>s+d.activities.length,0);
+
+const ACHIEVEMENTS=[
+{id:'first',icon:'🌟',name:'Primer Paso',desc:'Primera actividad',cond:s=>s.totalCompleted>=1,xp:50},
+{id:'streak3',icon:'🔥',name:'En Racha',desc:'3 días seguidos',cond:s=>s.streak>=3,xp:100},
+{id:'streak7',icon:'⚡',name:'Imparable',desc:'7 días seguidos',cond:s=>s.streak>=7,xp:200},
+{id:'streak14',icon:'💎',name:'Dedicación',desc:'14 días seguidos',cond:s=>s.streak>=14,xp:300},
+{id:'streak30',icon:'🏅',name:'Maratonista',desc:'30 días seguidos',cond:s=>s.streak>=30,xp:500},
+{id:'total10',icon:'📚',name:'Estudiante',desc:'10 actividades',cond:s=>s.totalCompleted>=10,xp:50},
+{id:'total50',icon:'📖',name:'Avanzado',desc:'50 actividades',cond:s=>s.totalCompleted>=50,xp:100},
+{id:'total100',icon:'🎯',name:'Centurión',desc:'100 actividades',cond:s=>s.totalCompleted>=100,xp:150},
+{id:'total200',icon:'💪',name:'Disciplinado',desc:'200 actividades',cond:s=>s.totalCompleted>=200,xp:200},
+{id:'half',icon:'🏆',name:'Medio Camino',desc:'50% del plan',cond:s=>s.percent>=50,xp:150},
+{id:'three4',icon:'🌟',name:'Casi Allí',desc:'75% del plan',cond:s=>s.percent>=75,xp:200},
+{id:'master',icon:'👑',name:'Maestro Total',desc:'100% del plan',cond:s=>s.percent>=100,xp:500},
+{id:'perfectDay',icon:'💯',name:'Día Perfecto',desc:'Día 100%',cond:s=>s.perfectDays>0,xp:100},
+{id:'pomo5',icon:'🍅',name:'Pomodoro Fan',desc:'5 pomodoros',cond:s=>s.pomos>=5,xp:50},
+{id:'pomo25',icon:'⏱️',name:'Pomodoro Master',desc:'25 pomodoros',cond:s=>s.pomos>=25,xp:150},
+{id:'mat20',icon:'📐',name:'Matemático',desc:'20 de Matemáticas',cond:s=>(s.catCount.mat||0)>=20,xp:100},
+{id:'verbal20',icon:'📖',name:'Lector',desc:'20 de Hab. Verbal',cond:s=>(s.catCount.verbal||0)>=20,xp:100},
+{id:'fis15',icon:'🔬',name:'Físico',desc:'15 de Física',cond:s=>(s.catCount.fis||0)>=15,xp:100},
+{id:'qui15',icon:'⚗️',name:'Químico',desc:'15 de Química',cond:s=>(s.catCount.qui||0)>=15,xp:100},
+{id:'bio10',icon:'🧬',name:'Biólogo',desc:'10 de Biología',cond:s=>(s.catCount.bio||0)>=10,xp:100},
+{id:'hist10',icon:'📜',name:'Historiador',desc:'10 de Historia',cond:s=>(s.catCount.hist||0)>=10,xp:100},
+{id:'level5',icon:'🎖️',name:'Analista',desc:'Nivel 5',cond:s=>s.level>=5,xp:100},
+{id:'level10',icon:'🏅',name:'Investigador',desc:'Nivel 10',cond:s=>s.level>=10,xp:200},
+{id:'level15',icon:'📜',name:'Catedrático',desc:'Nivel 15',cond:s=>s.level>=15,xp:300},
+{id:'level20',icon:'👑',name:'Eminencia',desc:'Nivel 20',cond:s=>s.level>=20,xp:500},
+{id:'streak10',icon:'🔥',name:'Diez en Racha',desc:'10 días seguidos',cond:s=>s.streak>=10,xp:200},
+{id:'esp5',icon:'✍️',name:'Escritor',desc:'5 de Español',cond:s=>(s.catCount.esp||0)>=5,xp:100},
+{id:'allCats',icon:'🧩',name:'Multidisciplinar',desc:'5+ de cada materia',cond:s=>{const c=s.catCount;return ['mat','verbal','habmat','hist','geo','bio','qui','fis'].every(k=>(c[k]||0)>=5)},xp:300},
+{id:'fase0',icon:'🚀',name:'Fase 0 Completa',desc:'Termina Fase 0',cond:s=>s.faseDone[0],xp:100},
+{id:'fase4',icon:'🎓',name:'Plan Completo',desc:'Termina Fase 4',cond:s=>s.faseDone[4],xp:500}
+];
+
+const DEFAULT_STATE={version:'4.2',firstVisit:true,user:{name:'Estudiante',avatar:'🧑‍🎓',settings:{theme:'obsidiana',soundEnabled:true,soundVolume:.6,perfMode:'high'}},progress:{xp:0,level:1,rank:'Aprendiz Inicial',rankEmoji:'🔰',streak:0,bestStreak:0,lastActiveDate:null,totalCompleted:0,perfectDays:[],pomodorosCompleted:0,completedActivities:{},activityNotes:{},checksToday:0,earlyBird:false,nightOwl:false},achievements:{unlocked:[],dates:{}},notes:{general:''},weeklyGoals:[],phasesOpen:{0:true,1:false,2:false,3:false,4:false}};
+
+let STATE;
+function loadState(){try{const s=localStorage.getItem('studyplanner_ecoems_state');STATE=s?{...DEFAULT_STATE,...JSON.parse(s)}:JSON.parse(JSON.stringify(DEFAULT_STATE));if(!STATE.progress)STATE.progress={...DEFAULT_STATE.progress};if(!STATE.user)STATE.user={...DEFAULT_STATE.user};if(!STATE.user.settings)STATE.user.settings={...DEFAULT_STATE.user.settings};if(!STATE.achievements)STATE.achievements={...DEFAULT_STATE.achievements};if(!STATE.phasesOpen)STATE.phasesOpen={...DEFAULT_STATE.phasesOpen};if(!STATE.notes)STATE.notes={general:''};if(!STATE.weeklyGoals)STATE.weeklyGoals=[]}catch(e){STATE=JSON.parse(JSON.stringify(DEFAULT_STATE))}}
+function saveState(){try{localStorage.setItem('studyplanner_ecoems_state',JSON.stringify(STATE))}catch(e){console.warn('Save failed',e)}}
+let saveTimeout;
+function debouncedSave(showToastFlag){clearTimeout(saveTimeout);saveTimeout=setTimeout(()=>{saveState();if(showToastFlag)showToast('✓ Guardado','save')},500)}
+
+let audioCtx;
+function initAudio(){if(!audioCtx)try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}
+function resumeAudio(){if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume()}
+function playSound(type){if(!STATE.user.settings.soundEnabled||!audioCtx)return;try{const vol=STATE.user.settings.soundVolume||.6;const g=audioCtx.createGain();g.connect(audioCtx.destination);const now=audioCtx.currentTime;switch(type){case'click':{const o=audioCtx.createOscillator();o.type='sine';o.frequency.value=1000;g.gain.setValueAtTime(vol*.06,now);g.gain.exponentialRampToValueAtTime(.001,now+.025);o.connect(g);o.start(now);o.stop(now+.03);break}case'check':{const o=audioCtx.createOscillator();o.type='sine';const hz=800+(STATE.progress.checksToday||0)*50;o.frequency.setValueAtTime(hz,now);o.frequency.linearRampToValueAtTime(hz+400,now+.06);g.gain.setValueAtTime(vol*.12,now);g.gain.exponentialRampToValueAtTime(.001,now+.08);o.connect(g);o.start(now);o.stop(now+.1);break}case'uncheck':{const o=audioCtx.createOscillator();o.type='sine';o.frequency.setValueAtTime(600,now);o.frequency.linearRampToValueAtTime(400,now+.05);g.gain.setValueAtTime(vol*.08,now);g.gain.exponentialRampToValueAtTime(.001,now+.06);o.connect(g);o.start(now);o.stop(now+.07);break}case'dayComplete':{[523,659,784].forEach((hz,i)=>{const o=audioCtx.createOscillator();o.type='sine';o.frequency.value=hz;const gg=audioCtx.createGain();gg.gain.setValueAtTime(vol*.18,now+i*.1);gg.gain.exponentialRampToValueAtTime(.001,now+i*.1+.15);o.connect(gg);gg.connect(audioCtx.destination);o.start(now+i*.1);o.stop(now+i*.1+.2)});break}case'levelup':{[262,330,392,523,659].forEach((hz,i)=>{const o=audioCtx.createOscillator();o.type=i%2===0?'sine':'triangle';o.frequency.value=hz;const gg=audioCtx.createGain();gg.gain.setValueAtTime(vol*.22,now+i*.12);gg.gain.exponentialRampToValueAtTime(.001,now+i*.12+.3);o.connect(gg);gg.connect(audioCtx.destination);o.start(now+i*.12);o.stop(now+i*.12+.4)});break}case'achievement':{[440,554,659,880,1047,1319].forEach((hz,i)=>{const o=audioCtx.createOscillator();o.type='sine';o.frequency.value=hz;const gg=audioCtx.createGain();gg.gain.setValueAtTime(vol*.2,now+i*.08);gg.gain.exponentialRampToValueAtTime(.001,now+i*.08+.4);o.connect(gg);gg.connect(audioCtx.destination);o.start(now+i*.08);o.stop(now+i*.08+.5)});break}case'expand':case'collapse':{const o=audioCtx.createOscillator();o.type='sine';const start=type==='expand'?600:800,end=type==='expand'?800:600;o.frequency.setValueAtTime(start,now);o.frequency.linearRampToValueAtTime(end,now+.04);g.gain.setValueAtTime(vol*.05,now);g.gain.exponentialRampToValueAtTime(.001,now+.05);o.connect(g);o.start(now);o.stop(now+.06);break}case'pomodone':{[440,880,440,880].forEach((hz,i)=>{const o=audioCtx.createOscillator();o.type='square';o.frequency.value=hz;const gg=audioCtx.createGain();gg.gain.setValueAtTime(vol*.25,now+i*.2);gg.gain.exponentialRampToValueAtTime(.001,now+i*.2+.15);o.connect(gg);gg.connect(audioCtx.destination);o.start(now+i*.2);o.stop(now+i*.2+.2)});break}case'theme':{[262,330,392].forEach(hz=>{const o=audioCtx.createOscillator();o.type='sine';o.frequency.value=hz;const gg=audioCtx.createGain();gg.gain.setValueAtTime(vol*.08,now);gg.gain.exponentialRampToValueAtTime(.001,now+.2);o.connect(gg);gg.connect(audioCtx.destination);o.start(now);o.stop(now+.25)});break}}}catch(e){}}
+
+function showToast(msg,type='normal',dur=2500){const t=document.createElement('div');t.className=`toast ${type==='golden'?'golden':type==='save'?'save':''}`;t.textContent=msg;document.getElementById('toastContainer').appendChild(t);setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),300)},dur)}
+
+function launchConfetti(dur=2500){const canvas=document.getElementById('confettiCanvas');const ctx=canvas.getContext('2d');canvas.width=window.innerWidth;canvas.height=window.innerHeight;const particles=[];const emojis=['🎉','🎊','⭐','✨','💯','🏆'];for(let i=0;i<60;i++){particles.push({x:canvas.width/2+((Math.random()-.5)*200),y:canvas.height/2,vx:(Math.random()-.5)*12,vy:-(Math.random()*15+5),size:Math.random()*12+8,rot:Math.random()*360,rotSpeed:(Math.random()-.5)*10,alpha:1,emoji:emojis[Math.floor(Math.random()*emojis.length)],gravity:.3})}const start=performance.now();function draw(now){const elapsed=now-start;if(elapsed>dur){ctx.clearRect(0,0,canvas.width,canvas.height);return}ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.rot+=p.rotSpeed;p.alpha=Math.max(0,1-elapsed/dur);ctx.save();ctx.globalAlpha=p.alpha;ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.font=`${p.size}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.emoji,0,0);ctx.restore()});requestAnimationFrame(draw)}requestAnimationFrame(draw)}
+
+function getRankForXP(xp){for(let i=RANKS.length-1;i>=0;i--)if(xp>=RANKS[i].xp)return RANKS[i];return RANKS[0]}
+function addXP(amount){const oldRank=getRankForXP(STATE.progress.xp);STATE.progress.xp+=amount;const newRank=getRankForXP(STATE.progress.xp);STATE.progress.level=newRank.level;STATE.progress.rank=newRank.name;STATE.progress.rankEmoji=newRank.emoji;updateXPUI();if(newRank.level>oldRank.level){playSound('levelup');showLevelUpModal(newRank);if(navigator.vibrate)navigator.vibrate([20,50,20,50,40,100,60])}showXPFloat(amount);debouncedSave();checkAchievements()}
+function showXPFloat(amount){const el=document.createElement('div');el.className='xp-float';el.textContent=`+${amount} XP`;el.style.left=Math.random()*60+20+'%';el.style.top='40%';document.body.appendChild(el);setTimeout(()=>el.remove(),1000)}
+function updateXPUI(){const rank=getRankForXP(STATE.progress.xp);const nextXP=rank.level<20?RANKS[rank.level].xp:rank.xp+10000;const prevXP=rank.xp;const progress=Math.min(1,(STATE.progress.xp-prevXP)/(nextXP-prevXP));document.getElementById('xpEmoji').textContent=rank.emoji;document.getElementById('xpRankName').textContent=rank.name;document.getElementById('xpRankLevel').textContent=`Nivel ${rank.level}`;document.getElementById('xpNumbers').textContent=`${STATE.progress.xp.toLocaleString()} / ${nextXP.toLocaleString()} XP`;document.getElementById('xpBarFill').style.transform=`scaleX(${progress})`;document.getElementById('xpBarText').textContent=`${STATE.progress.xp.toLocaleString()} / ${nextXP.toLocaleString()} XP`;document.getElementById('levelBadge').textContent=rank.level;document.getElementById('sidebarRank').textContent=`${rank.emoji} ${rank.name}`;document.getElementById('panelLevel').textContent=rank.level;document.getElementById('panelXP').textContent=STATE.progress.xp.toLocaleString();document.getElementById('panelStreak').textContent=STATE.progress.streak+' 🔥';document.getElementById('panelCompleted').textContent=STATE.progress.totalCompleted;document.getElementById('panelProgress').textContent=Math.round(STATE.progress.totalCompleted/TOTAL_ACTIVITIES*100)+'%'}
+function showLevelUpModal(rank){const overlay=document.createElement('div');overlay.className='modal-overlay levelup-modal';overlay.innerHTML=`<div class="modal"><div class="modal-line"></div><div class="modal-body" style="text-align:center;padding:40px 24px"><div class="levelup-badge">${rank.emoji}</div><div class="levelup-title">¡NIVEL ${rank.level}!</div><div class="levelup-rank">${rank.name}</div><button class="dashboard-cta" onclick="this.closest('.modal-overlay').classList.remove('open');setTimeout(()=>this.closest('.modal-overlay').remove(),300)">Continuar</button></div></div>`;document.body.appendChild(overlay);requestAnimationFrame(()=>overlay.classList.add('open'));launchConfetti(3000)}
+
+function updateStreak(){const today=new Date().toISOString().split('T')[0];if(STATE.progress.lastActiveDate===today)return;const y=new Date();y.setDate(y.getDate()-1);const yStr=y.toISOString().split('T')[0];if(STATE.progress.lastActiveDate===yStr)STATE.progress.streak++;else STATE.progress.streak=1;STATE.progress.lastActiveDate=today;if(STATE.progress.streak>STATE.progress.bestStreak)STATE.progress.bestStreak=STATE.progress.streak;const bonuses={3:100,5:200,7:300,10:200,14:500,30:1000};if(bonuses[STATE.progress.streak]){addXP(bonuses[STATE.progress.streak]);showToast(`🔥 ¡Racha de ${STATE.progress.streak} días! +${bonuses[STATE.progress.streak]} XP`,'golden')}debouncedSave()}
+
+function checkAchievements(){const catCount={};PLAN_DATA.forEach(d=>d.activities.forEach(a=>{if(STATE.progress.completedActivities[a.id])catCount[a.cat]=(catCount[a.cat]||0)+1}));const faseDone={};PHASES.forEach(p=>{const allDone=p.days.every(d=>d.activities.every(a=>STATE.progress.completedActivities[a.id]));faseDone[p.id]=allDone&&p.days.length>0});const stats={totalCompleted:STATE.progress.totalCompleted,streak:STATE.progress.streak,percent:Math.round(STATE.progress.totalCompleted/TOTAL_ACTIVITIES*100),perfectDays:STATE.progress.perfectDays?.length||0,pomos:STATE.progress.pomodorosCompleted||0,catCount,level:STATE.progress.level,faseDone};ACHIEVEMENTS.forEach(ach=>{if(STATE.achievements.unlocked.includes(ach.id))return;try{if(ach.cond(stats)){STATE.achievements.unlocked.push(ach.id);STATE.achievements.dates[ach.id]=new Date().toISOString();playSound('achievement');showToast(`🏆 ¡Logro! ${ach.icon} ${ach.name} (+${ach.xp} XP)`,'golden',3500);addXP(ach.xp);if(navigator.vibrate)navigator.vibrate([10,50,10])}}catch(e){}});debouncedSave()}
+
+function renderPhases(){const container=document.getElementById('fasesContainer');container.innerHTML='';PHASES.forEach(phase=>{const phaseEl=document.createElement('div');phaseEl.className=`fase ${STATE.phasesOpen[phase.id]?'open':''}`;phaseEl.dataset.phase=phase.id;const completed=phase.days.reduce((s,d)=>s+d.activities.filter(a=>STATE.progress.completedActivities[a.id]).length,0);const total=phase.days.reduce((s,d)=>s+d.activities.length,0);const pct=total?Math.round(completed/total*100):0;phaseEl.innerHTML=`<div class="fase-header" onclick="togglePhase(${phase.id})"><div class="fase-header-left"><span class="fase-arrow">▸</span><div class="fase-title-wrap"><div class="fase-title">${phase.name}</div><div class="fase-meta">${phase.days.length} días · ${completed}/${total} completadas</div></div></div><div class="fase-header-right"><div class="fase-progress-mini"><div class="fase-progress-mini-fill" style="width:${pct}%"></div></div><span class="fase-count">${pct}%</span></div></div><div class="fase-body" id="faseBody${phase.id}"></div>`;container.appendChild(phaseEl);if(STATE.phasesOpen[phase.id])renderPhaseDays(phase)})}
+
+function renderPhaseDays(phase){const body=document.getElementById(`faseBody${phase.id}`);if(!body||body.children.length>0)return;const today=new Date();today.setHours(0,0,0,0);phase.days.forEach(day=>{const dayEl=document.createElement('div');dayEl.className='dia-card';dayEl.dataset.day=day.day;const dayDate=new Date(day.date+'T00:00:00');dayDate.setHours(0,0,0,0);const isToday=dayDate.getTime()===today.getTime();const completed=day.activities.filter(a=>STATE.progress.completedActivities[a.id]).length;const total=day.activities.length;const isComplete=completed===total&&total>0;if(isToday)dayEl.classList.add('today');if(isComplete)dayEl.classList.add('completed');const cats=[...new Set(day.activities.map(a=>a.cat))];const catBadges=cats.map(c=>{const cat=CATEGORIES[c];return `<span class="dia-cat-badge" style="background:${cat.color}22;color:${cat.color};border:1px solid ${cat.color}44">${cat.emoji}</span>`}).join('');dayEl.innerHTML=`<div class="dia-header" onclick="toggleDay(${day.day})"><div class="dia-header-left"><span class="dia-num">Día ${day.day}</span><div class="dia-info"><div class="dia-fecha">${day.dateStr}</div><div class="dia-cats">${catBadges}</div></div></div><div class="dia-header-right"><span class="dia-counter">${completed}/${total}</span><span class="dia-arrow">▸</span></div></div><div class="dia-body"><div class="dia-activities">${day.activities.map(a=>renderActivity(a,day.day)).join('')}${isComplete?'<button class="complete-day-btn completed" disabled>✅ Día Completado</button>':`<button class="complete-day-btn" onclick="completeDay(${day.day})">✅ Completar Día</button>`}</div></div>`;body.appendChild(dayEl);if(isToday)setTimeout(()=>dayEl.scrollIntoView({behavior:'smooth',block:'center'}),600)});setTimeout(()=>{const fb=document.getElementById(`faseBody${phase.id}`);if(fb)fb.style.maxHeight=fb.scrollHeight+'px'},80)}
+
+function renderActivity(act,dayNum){const isDone=STATE.progress.completedActivities[act.id];const cat=CATEGORIES[act.cat];const priEmoji=act.pri==='alta'?'🔴':act.pri==='media'?'🟡':'🟢';const note=STATE.progress.activityNotes?.[act.id]||'';return `<div class="activity ${isDone?'done':''}" data-id="${act.id}" data-cat="${act.cat}" data-day="${dayNum}"><div class="checkbox-circular ${isDone?'checked':''}" onclick="event.stopPropagation();toggleActivity('${act.id}',${dayNum})"></div><div class="activity-content" onclick="toggleActivityDetail('${act.id}')"><div class="activity-name">${act.name}</div><div class="activity-meta"><span class="activity-duration">⏱️ ${act.dur}min</span><span class="activity-cat" style="background:${cat.color}22;color:${cat.color}">${cat.emoji} ${cat.name}</span><span class="activity-priority">${priEmoji}</span></div></div></div><div class="activity-detail" id="detail_${act.id}"><div class="activity-detail-text">${act.det}</div><textarea class="activity-notes" placeholder="Tus notas..." oninput="saveActivityNote('${act.id}',this.value)">${note}</textarea></div>`}
+
+function togglePhase(id){const el=document.querySelector(`.fase[data-phase="${id}"]`);if(!el)return;const isOpen=el.classList.contains('open');const body=document.getElementById(`faseBody${id}`);if(isOpen){playSound('collapse');body.style.maxHeight=body.scrollHeight+'px';requestAnimationFrame(()=>{body.style.maxHeight='0';body.style.opacity='0'});el.classList.remove('open');STATE.phasesOpen[id]=false}else{playSound('expand');el.classList.add('open');STATE.phasesOpen[id]=true;renderPhaseDays(PHASES.find(p=>p.id===id));requestAnimationFrame(()=>{setTimeout(()=>{body.style.maxHeight=body.scrollHeight+'px';body.style.opacity='1'},50)})}debouncedSave()}
+
+function toggleDay(dayNum){const el=document.querySelector(`.dia-card[data-day="${dayNum}"]`);if(!el)return;const isOpen=el.classList.contains('open');const body=el.querySelector('.dia-body');if(isOpen){playSound('collapse');body.style.maxHeight=body.scrollHeight+'px';requestAnimationFrame(()=>{body.style.maxHeight='0';body.style.opacity='0'});el.classList.remove('open')}else{playSound('expand');el.classList.add('open');body.style.maxHeight=body.scrollHeight+'px';body.style.opacity='1';const fb=el.closest('.fase-body');if(fb)setTimeout(()=>{fb.style.maxHeight=fb.scrollHeight+'px'},150)}}
+
+function toggleActivityDetail(id){const detail=document.getElementById(`detail_${id}`);if(!detail)return;if(detail.classList.contains('open')){detail.style.maxHeight='0';detail.classList.remove('open')}else{detail.classList.add('open');detail.style.maxHeight=detail.scrollHeight+'px';const fb=detail.closest('.fase-body');if(fb)setTimeout(()=>{fb.style.maxHeight=fb.scrollHeight+'px'},150);const dc=detail.closest('.dia-card');if(dc&&dc.classList.contains('open')){const db=dc.querySelector('.dia-body');setTimeout(()=>{db.style.maxHeight=db.scrollHeight+'px'},100)}}}
+
+function toggleActivity(id,dayNum){resumeAudio();const isDone=STATE.progress.completedActivities[id];if(isDone){delete STATE.progress.completedActivities[id];STATE.progress.totalCompleted--;STATE.progress.xp=Math.max(0,STATE.progress.xp-10);playSound('uncheck')}else{STATE.progress.completedActivities[id]=new Date().toISOString();STATE.progress.totalCompleted++;STATE.progress.checksToday=(STATE.progress.checksToday||0)+1;addXP(10);playSound('check');updateStreak();if(navigator.vibrate)navigator.vibrate(10);const h=new Date().getHours();if(h<7)STATE.progress.earlyBird=true;if(h>=23)STATE.progress.nightOwl=true}const actEl=document.querySelector(`.activity[data-id="${id}"]`);if(actEl){const cb=actEl.querySelector('.checkbox-circular');if(isDone){actEl.classList.remove('done');cb.classList.remove('checked')}else{actEl.classList.add('done');cb.classList.add('checked')}}const dayData=PLAN_DATA.find(d=>d.day===dayNum);if(dayData){const dayCard=document.querySelector(`.dia-card[data-day="${dayNum}"]`);if(dayCard){const completed=dayData.activities.filter(a=>STATE.progress.completedActivities[a.id]).length;const counter=dayCard.querySelector('.dia-counter');if(counter)counter.textContent=`${completed}/${dayData.activities.length}`;if(completed===dayData.activities.length){dayCard.classList.add('completed');const btn=dayCard.querySelector('.complete-day-btn');if(btn&&!btn.classList.contains('completed')){btn.classList.add('completed');btn.disabled=true;btn.textContent='✅ Día Completado'}}else dayCard.classList.remove('completed')}}updatePhaseProgress();updateDashboard();debouncedSave();checkAchievements()}
+
+function completeDay(dayNum){const dayData=PLAN_DATA.find(d=>d.day===dayNum);if(!dayData)return;resumeAudio();let delay=0;dayData.activities.forEach(a=>{if(!STATE.progress.completedActivities[a.id]){setTimeout(()=>toggleActivity(a.id,dayNum),delay);delay+=100}});setTimeout(()=>{playSound('dayComplete');launchConfetti(2500);addXP(50);showToast(`🎉 ¡Día ${dayNum} completado! +50 XP`,'golden');if(navigator.vibrate)navigator.vibrate([10,30,10,30,10]);if(!STATE.progress.perfectDays)STATE.progress.perfectDays=[];if(!STATE.progress.perfectDays.includes(dayNum))STATE.progress.perfectDays.push(dayNum)},delay+200)}
+
+function saveActivityNote(id,val){if(!STATE.progress.activityNotes)STATE.progress.activityNotes={};STATE.progress.activityNotes[id]=val;debouncedSave()}
+
+function updatePhaseProgress(){document.querySelectorAll('.fase').forEach(el=>{const phaseId=parseInt(el.dataset.phase);const phase=PHASES.find(p=>p.id===phaseId);if(!phase)return;const completed=phase.days.reduce((s,d)=>s+d.activities.filter(a=>STATE.progress.completedActivities[a.id]).length,0);const total=phase.days.reduce((s,d)=>s+d.activities.length,0);const pct=total?Math.round(completed/total*100):0;const fill=el.querySelector('.fase-progress-mini-fill');const count=el.querySelector('.fase-count');const meta=el.querySelector('.fase-meta');if(fill)fill.style.width=pct+'%';if(count)count.textContent=pct+'%';if(meta)meta.textContent=`${phase.days.length} días · ${completed}/${total} completadas`})}
+
+function updateDashboard(){const h=new Date().getHours();let greeting='Buenos días';if(h>=12&&h<19)greeting='Buenas tardes';else if(h>=19&&h<23)greeting='Buenas noches';else if(h>=23||h<5)greeting='Trabajando hasta tarde 🌙';document.getElementById('dashGreeting').innerHTML=`${greeting}, ${STATE.user.name} <span class="wave">👋</span>`;document.getElementById('dashSubtitle').textContent=`${STATE.progress.totalCompleted} de ${TOTAL_ACTIVITIES} actividades completadas`;document.getElementById('streakValue').textContent=`${STATE.progress.streak} día${STATE.progress.streak!==1?'s':''}`;document.getElementById('bestStreak').textContent=STATE.progress.bestStreak;const today=new Date();today.setHours(0,0,0,0);let nextTask=null;for(const d of PLAN_DATA){const dd=new Date(d.date+'T00:00:00');dd.setHours(0,0,0,0);if(dd>=today){const pending=d.activities.find(a=>!STATE.progress.completedActivities[a.id]);if(pending){nextTask={...pending,day:d.day,date:d.date};break}}}document.getElementById('nextTaskName').textContent=nextTask?nextTask.name:'¡Todo al día! ✨';const todayData=PLAN_DATA.find(d=>{const dd=new Date(d.date+'T00:00:00');dd.setHours(0,0,0,0);return dd.getTime()===today.getTime()});let todayPct=0;if(todayData){const done=todayData.activities.filter(a=>STATE.progress.completedActivities[a.id]).length;todayPct=Math.round(done/todayData.activities.length*100)}document.getElementById('todayPctValue').textContent=todayPct+'%';const ring=document.getElementById('todayProgressRing');const circumference=2*Math.PI*42;ring.style.strokeDashoffset=circumference*(1-todayPct/100);const qi=Math.floor(Math.random()*FRASES.length);document.getElementById('dashQuote').textContent=`❝ ${FRASES[qi]} ❞`;updateUpcomingPanel()}
+
+function updateUpcomingPanel(){const today=new Date();today.setHours(0,0,0,0);const upcoming=PLAN_DATA.filter(d=>{const dd=new Date(d.date+'T00:00:00');dd.setHours(0,0,0,0);return dd>=today}).slice(0,4);const el=document.getElementById('panelUpcoming');if(!el)return;el.innerHTML=upcoming.map(d=>{const done=d.activities.filter(a=>STATE.progress.completedActivities[a.id]).length;return `<div style="padding:8px 0;border-bottom:1px solid var(--border-base);font-size:.813rem"><div style="font-weight:600">Día ${d.day}</div><div style="color:var(--text-muted);font-size:.75rem">${d.dateStr.split(' de ').slice(0,2).join(' de ')} · ${done}/${d.activities.length}</div></div>`}).join('')}
+
+function switchView(viewName){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));const target=document.getElementById(`view-${viewName}`);if(target){target.classList.add('active');playSound('click')}document.querySelectorAll('.menu-item').forEach(m=>m.classList.toggle('active',m.dataset.view===viewName));closeSidebar();if(viewName==='calendario')renderCalendar();if(viewName==='estadisticas')renderStats();if(viewName==='nivel')renderRanks();if(viewName==='logros')renderAchievements();if(viewName==='metas')renderMetas()}
+
+document.querySelectorAll('.menu-item').forEach(item=>item.addEventListener('click',()=>switchView(item.dataset.view)));
+function closeSidebar(){document.getElementById('sidebar').classList.remove('mobile-open');document.getElementById('sidebarOverlay').classList.remove('show')}
+document.getElementById('hamburgerBtn').addEventListener('click',()=>{const sb=document.getElementById('sidebar');sb.classList.toggle('mobile-open');document.getElementById('sidebarOverlay').classList.toggle('show',sb.classList.contains('mobile-open'))});
+document.getElementById('sidebarOverlay').addEventListener('click',closeSidebar);
+
+let fraseIdx=0,fraseInterval;
+function rotateFrase(){fraseIdx=(fraseIdx+1)%FRASES.length;const el=document.getElementById('fraseContent');el.style.opacity='0';el.style.transform='translateY(-15px)';setTimeout(()=>{el.textContent=FRASES[fraseIdx];el.style.opacity='1';el.style.transform='translateY(0)'},600)}
+function startFrases(){fraseInterval=setInterval(rotateFrase,5000)}
+document.getElementById('bannerFrases').addEventListener('mouseenter',()=>clearInterval(fraseInterval));
+document.getElementById('bannerFrases').addEventListener('mouseleave',startFrases);
+
+function updateClock(){const now=new Date();const h=String(now.getHours()).padStart(2,'0');const m=String(now.getMinutes()).padStart(2,'0');const s=String(now.getSeconds()).padStart(2,'0');document.getElementById('headerClock').textContent=`${h}:${m}:${s}`;const dayPct=((now.getHours()*3600+now.getMinutes()*60+now.getSeconds())/86400)*100;document.getElementById('timeBar').style.width=dayPct+'%'}
+setInterval(updateClock,1000);
+
+let searchTimeout;
+const searchInput=document.getElementById('searchInput'),searchClear=document.getElementById('searchClear');
+searchInput.addEventListener('input',e=>{const val=e.target.value;searchClear.classList.toggle('show',val.length>0);clearTimeout(searchTimeout);searchTimeout=setTimeout(()=>applySearch(val.toLowerCase().trim()),350)});
+searchClear.addEventListener('click',()=>{searchInput.value='';searchClear.classList.remove('show');applySearch('')});
+searchInput.addEventListener('keydown',e=>{if(e.key==='Escape'){searchInput.value='';searchClear.classList.remove('show');applySearch('')}});
+function applySearch(query){if(!query){document.querySelectorAll('.dia-card,.activity').forEach(el=>el.style.display='');document.querySelectorAll('.fase').forEach(f=>{if(STATE.phasesOpen[f.dataset.phase]){const fb=f.querySelector('.fase-body');if(fb)setTimeout(()=>{fb.style.maxHeight=fb.scrollHeight+'px'},100)}});return}PHASES.forEach(phase=>{if(!STATE.phasesOpen[phase.id]){STATE.phasesOpen[phase.id]=true;const fEl=document.querySelector(`.fase[data-phase="${phase.id}"]`);if(fEl){fEl.classList.add('open');renderPhaseDays(phase);const fb=document.getElementById(`faseBody${phase.id}`);if(fb)setTimeout(()=>{fb.style.maxHeight=fb.scrollHeight+'px';fb.style.opacity='1'},80)}}});setTimeout(()=>{document.querySelectorAll('.dia-card').forEach(dia=>{let hasMatch=false;dia.querySelectorAll('.activity').forEach(act=>{const name=act.querySelector('.activity-name')?.textContent.toLowerCase()||'';const cat=act.dataset.cat||'';if(name.includes(query)||cat.includes(query)){act.style.display='';hasMatch=true}else act.style.display='none'});const fecha=dia.querySelector('.dia-fecha')?.textContent.toLowerCase()||'';if(fecha.includes(query))hasMatch=true;dia.style.display=hasMatch?'':'none'})},200)}
+
+document.querySelectorAll('.chip').forEach(chip=>chip.addEventListener('click',()=>{document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));chip.classList.add('active');const filter=chip.dataset.filter;playSound('click');document.querySelectorAll('.activity').forEach(act=>{if(filter==='todas'||act.dataset.cat===filter){act.style.opacity='';act.style.transform=''}else{act.style.opacity='.2';act.style.transform='scale(0.98)'}})}));
+
+let calMonth=5,calYear=2026;
+function renderCalendar(){const grid=document.getElementById('calGrid');grid.innerHTML='';const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];document.getElementById('calMonthTitle').textContent=`${months[calMonth]} ${calYear}`;['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].forEach(d=>{grid.innerHTML+=`<div class="cal-header-cell">${d}</div>`});const firstDay=new Date(calYear,calMonth,1);let startDay=firstDay.getDay();startDay=startDay===0?6:startDay-1;const daysInMonth=new Date(calYear,calMonth+1,0).getDate();const today=new Date();today.setHours(0,0,0,0);for(let i=0;i<startDay;i++)grid.innerHTML+=`<div class="cal-cell empty"></div>`;for(let d=1;d<=daysInMonth;d++){const date=new Date(calYear,calMonth,d);date.setHours(0,0,0,0);const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const isToday=date.getTime()===today.getTime();const dayData=PLAN_DATA.find(pd=>pd.date===dateStr);let cls='cal-cell';let dotColor='transparent';if(isToday)cls+=' today';if(dayData){const done=dayData.activities.filter(a=>STATE.progress.completedActivities[a.id]).length;const total=dayData.activities.length;if(done===total&&total>0){cls+=' completed';dotColor='var(--accent-primary)'}else if(done>0){cls+=' partial';dotColor='#F39C12'}else dotColor='var(--text-faint)'}grid.innerHTML+=`<div class="${cls}" onclick="calDayClick(${dayData?dayData.day:0})"><span class="cal-day-num">${d}</span>${dayData?`<span class="cal-dot" style="background:${dotColor}"></span>`:''}</div>`}}
+
+function calDayClick(dayNum){if(!dayNum)return;switchView('panel');setTimeout(()=>{const dayData=PLAN_DATA.find(d=>d.day===dayNum);if(!dayData)return;const phaseId=dayData.phase;if(!STATE.phasesOpen[phaseId])togglePhase(phaseId);setTimeout(()=>{const dayEl=document.querySelector(`.dia-card[data-day="${dayNum}"]`);if(dayEl){if(!dayEl.classList.contains('open'))toggleDay(dayNum);dayEl.scrollIntoView({behavior:'smooth',block:'center'})}},500)},100)}
+
+document.getElementById('calPrev').addEventListener('click',()=>{calMonth--;if(calMonth<0){calMonth=11;calYear--}renderCalendar()});
+document.getElementById('calNext').addEventListener('click',()=>{calMonth++;if(calMonth>11){calMonth=0;calYear++}renderCalendar()});
+
+function renderStats(){document.getElementById('statTotal').textContent=STATE.progress.totalCompleted;document.getElementById('statStreak').textContent=STATE.progress.streak;const totalMin=PLAN_DATA.reduce((s,d)=>s+d.activities.filter(a=>STATE.progress.completedActivities[a.id]).reduce((ss,a)=>ss+a.dur,0),0);document.getElementById('statTime').textContent=`${Math.floor(totalMin/60)}h ${totalMin%60}m`;const activeDays=new Set();Object.values(STATE.progress.completedActivities).forEach(v=>{if(v)activeDays.add(v.split('T')[0])});const avg=activeDays.size?Math.round(STATE.progress.totalCompleted/activeDays.size*10)/10:0;document.getElementById('statAvg').textContent=avg;renderCatChart();renderWeekChart()}
+
+function renderCatChart(){const canvas=document.getElementById('catChart');if(!canvas)return;const ctx=canvas.getContext('2d');canvas.width=canvas.parentElement.clientWidth-44;canvas.height=240;ctx.clearRect(0,0,canvas.width,canvas.height);const catCounts={};Object.keys(CATEGORIES).forEach(c=>catCounts[c]=0);PLAN_DATA.forEach(d=>d.activities.forEach(a=>{if(STATE.progress.completedActivities[a.id])catCounts[a.cat]++}));const cats=Object.entries(catCounts).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);if(!cats.length){ctx.fillStyle='#888';ctx.font='15px Nunito';ctx.textAlign='center';ctx.fillText('Aún no hay datos',canvas.width/2,canvas.height/2);return}const maxVal=Math.max(...cats.map(([,v])=>v));const barW=Math.min(45,canvas.width/(cats.length*1.5));const gap=(canvas.width-cats.length*barW)/(cats.length+1);const chartH=canvas.height-50;cats.forEach(([cat,val],i)=>{const x=gap+(barW+gap)*i;const h=(val/maxVal)*chartH;const y=chartH-h+20;ctx.fillStyle=CATEGORIES[cat].color;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,barW,h,4);else ctx.rect(x,y,barW,h);ctx.fill();ctx.fillStyle='#888';ctx.font='11px Nunito';ctx.textAlign='center';ctx.fillText(CATEGORIES[cat].emoji,x+barW/2,canvas.height-5);ctx.fillStyle='#fff';ctx.font='bold 12px Poppins';ctx.fillText(val,x+barW/2,y-6)})}
+
+function renderWeekChart(){const canvas=document.getElementById('weekChart');if(!canvas)return;const ctx=canvas.getContext('2d');canvas.width=canvas.parentElement.clientWidth-44;canvas.height=200;ctx.clearRect(0,0,canvas.width,canvas.height);const weekData=[];for(let w=0;w<14;w++){const start=new Date(2026,5,16+w*7);const end=new Date(start);end.setDate(end.getDate()+6);let count=0;PLAN_DATA.forEach(d=>{const dd=new Date(d.date+'T00:00:00');if(dd>=start&&dd<=end)count+=d.activities.filter(a=>STATE.progress.completedActivities[a.id]).length});weekData.push(count)}const maxVal=Math.max(1,...weekData);const barW=Math.min(36,canvas.width/(weekData.length*1.5));const gap=(canvas.width-weekData.length*barW)/(weekData.length+1);weekData.forEach((val,i)=>{const x=gap+(barW+gap)*i;const h=(val/maxVal)*(canvas.height-40);const y=canvas.height-h-25;const style=getComputedStyle(document.documentElement);ctx.fillStyle=style.getPropertyValue('--accent-primary').trim()||'#FFD700';ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,barW,h,4);else ctx.rect(x,y,barW,h);ctx.fill();ctx.fillStyle='#888';ctx.font='10px Nunito';ctx.textAlign='center';ctx.fillText(`S${i+1}`,x+barW/2,canvas.height-5);if(val>0){ctx.fillStyle='#fff';ctx.font='bold 11px Poppins';ctx.fillText(val,x+barW/2,y-5)}})}
+
+function renderRanks(){const grid=document.getElementById('ranksGrid');grid.innerHTML='';RANKS.forEach(r=>{const isActive=STATE.progress.level>=r.level;const isCurrent=STATE.progress.level===r.level;grid.innerHTML+=`<div style="padding:18px;border-radius:14px;border:1px solid ${isCurrent?'var(--accent-primary)':'var(--border-contrast)'};background:${isCurrent?'rgba(255,215,0,.05)':'var(--bg-secondary)'};opacity:${isActive?'1':'.4'};text-align:center"><div style="font-size:2rem;margin-bottom:6px">${r.emoji}</div><div style="font-family:Poppins;font-weight:700;font-size:.95rem">${r.name}</div><div style="font-size:.75rem;color:var(--text-muted);margin-top:4px">Nivel ${r.level} · ${r.xp.toLocaleString()} XP</div>${isCurrent?'<div style="margin-top:8px;font-size:.75rem;color:var(--accent-primary);font-weight:700">← Estás aquí</div>':''}</div>`})}
+
+function renderAchievements(){const grid=document.getElementById('achievementsGrid');grid.innerHTML='';ACHIEVEMENTS.forEach(ach=>{const unlocked=STATE.achievements.unlocked.includes(ach.id);grid.innerHTML+=`<div class="achievement-card ${unlocked?'':'locked'}"><div class="ach-icon">${unlocked?ach.icon:'❓'}</div><div class="ach-name">${unlocked?ach.name:'???'}</div><div class="ach-desc">${ach.desc}</div>${unlocked?`<div style="margin-top:6px;font-size:.7rem;color:var(--accent-primary)">+${ach.xp} XP</div>`:''}</div>`})}
+
+let pomoTimer=null,pomoSeconds=25*60,pomoRunning=false,pomoIsBreak=false;
+const POMO_WORK=25*60,POMO_BREAK=5*60,POMO_LONG_BREAK=15*60;
+function updatePomoDisplay(){const m=Math.floor(pomoSeconds/60),s=pomoSeconds%60;document.getElementById('pomoTime').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;const circle=document.getElementById('pomoCircle');const total=pomoIsBreak?POMO_BREAK:POMO_WORK;const progress=1-pomoSeconds/total;circle.style.strokeDashoffset=565.49*(1-progress);document.getElementById('pomoLabel').textContent=pomoIsBreak?'Descanso':'Sesión de enfoque'}
+document.getElementById('pomoStartBtn').addEventListener('click',()=>{if(pomoRunning)return;pomoRunning=true;document.getElementById('pomoStartBtn').disabled=true;document.getElementById('pomoPauseBtn').disabled=false;pomoTimer=setInterval(()=>{pomoSeconds--;updatePomoDisplay();if(pomoSeconds<=0){clearInterval(pomoTimer);pomoRunning=false;if(!pomoIsBreak){STATE.progress.pomodorosCompleted=(STATE.progress.pomodorosCompleted||0)+1;document.getElementById('pomoCount').textContent=`🍅 Pomodoros: ${STATE.progress.pomodorosCompleted}`;playSound('pomodone');addXP(5);showToast('🍅 ¡Pomodoro completado! +5 XP','golden');debouncedSave();checkAchievements();pomoIsBreak=true;pomoSeconds=STATE.progress.pomodorosCompleted%4===0?POMO_LONG_BREAK:POMO_BREAK}else{pomoIsBreak=false;pomoSeconds=POMO_WORK}updatePomoDisplay();document.getElementById('pomoStartBtn').disabled=false;document.getElementById('pomoPauseBtn').disabled=true}},1000)});
+document.getElementById('pomoPauseBtn').addEventListener('click',()=>{clearInterval(pomoTimer);pomoRunning=false;document.getElementById('pomoStartBtn').disabled=false;document.getElementById('pomoPauseBtn').disabled=true});
+document.getElementById('pomoResetBtn').addEventListener('click',()=>{clearInterval(pomoTimer);pomoRunning=false;pomoIsBreak=false;pomoSeconds=POMO_WORK;updatePomoDisplay();document.getElementById('pomoStartBtn').disabled=false;document.getElementById('pomoPauseBtn').disabled=true});
+
+const notesEditor=document.getElementById('notesEditor');
+let noteTimeout;
+notesEditor.addEventListener('input',()=>{clearTimeout(noteTimeout);noteTimeout=setTimeout(()=>{STATE.notes.general=notesEditor.innerHTML;debouncedSave()},500)});
+
+document.querySelectorAll('.theme-swatch').forEach(swatch=>swatch.addEventListener('click',()=>{const theme=swatch.dataset.theme;document.documentElement.setAttribute('data-theme',theme);document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.remove('active'));swatch.classList.add('active');STATE.user.settings.theme=theme;playSound('theme');debouncedSave()}));
+
+document.getElementById('soundToggle').addEventListener('click',function(){this.classList.toggle('on');STATE.user.settings.soundEnabled=this.classList.contains('on');document.getElementById('muteBtn').textContent=STATE.user.settings.soundEnabled?'🔊':'🔇';debouncedSave()});
+document.getElementById('muteBtn').addEventListener('click',()=>{STATE.user.settings.soundEnabled=!STATE.user.settings.soundEnabled;document.getElementById('muteBtn').textContent=STATE.user.settings.soundEnabled?'🔊':'🔇';document.getElementById('soundToggle').classList.toggle('on',STATE.user.settings.soundEnabled);debouncedSave()});
+document.getElementById('volumeSlider').addEventListener('input',e=>{STATE.user.settings.soundVolume=parseInt(e.target.value)/100;debouncedSave()});
+document.getElementById('nameInput').addEventListener('input',e=>{STATE.user.name=e.target.value||'Estudiante';document.getElementById('sidebarName').textContent=STATE.user.name;updateDashboard();debouncedSave()});
+document.getElementById('settingsBtn').addEventListener('click',()=>switchView('configuracion'));
+
+document.getElementById('backupBtn').addEventListener('click',()=>{const data=JSON.stringify(STATE,null,2);const blob=new Blob([data],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`studyplanner_ecoems_${new Date().toISOString().split('T')[0]}.json`;a.click();showToast('💾 Respaldo descargado')});
+
+document.getElementById('resetBtn').addEventListener('click',()=>{const overlay=document.createElement('div');overlay.className='modal-overlay';overlay.innerHTML=`<div class="modal"><div class="modal-line"></div><div class="modal-header"><h3 class="modal-title">⚠️ Reiniciar Todo</h3><button class="modal-close" onclick="this.closest('.modal-overlay').classList.remove('open');setTimeout(()=>this.closest('.modal-overlay').remove(),300)">✕</button></div><div class="modal-body"><p style="margin-bottom:14px;color:var(--text-tertiary)">Esto borrará TODOS tus datos. Escribe <strong style="color:#E74C3C">REINICIAR</strong> para confirmar:</p><input type="text" id="resetConfirmInput" placeholder="Escribe REINICIAR" style="margin-bottom:14px"><button class="danger-btn" style="width:100%" onclick="confirmReset()">Confirmar</button></div></div>`;document.body.appendChild(overlay);requestAnimationFrame(()=>overlay.classList.add('open'))});
+window.confirmReset=function(){const input=document.getElementById('resetConfirmInput');if(input&&input.value==='REINICIAR'){localStorage.removeItem('studyplanner_ecoems_state');showToast('🗑️ Datos reiniciados');setTimeout(()=>location.reload(),1000)}else showToast('❌ Escribe REINICIAR correctamente')};
+
+const avatarEmojis=['🧑‍🎓','👩‍🎓','👨‍🎓','🧑‍💻','👩‍💻','👨‍💻','🧑‍🔬','👩‍🔬','👨‍🔬','🦊','🐱','🐶','🐼','🦁','🐯','🐸','🦉','🦄','🚀','⚡','🌟','💎','🎯','🔥','🏆','🎨'];
+const picker=document.getElementById('avatarPicker');
+avatarEmojis.forEach(e=>{const btn=document.createElement('button');btn.textContent=e;btn.style.cssText='font-size:1.4rem;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border-base);transition:all .3s;cursor:pointer;background:var(--bg-tertiary)';btn.addEventListener('click',()=>{STATE.user.avatar=e;document.getElementById('sidebarAvatar').textContent=e;playSound('click');debouncedSave();picker.querySelectorAll('button').forEach(b=>b.style.borderColor='var(--border-base)');btn.style.borderColor='var(--accent-primary)'});picker.appendChild(btn)});
+
+function renderMetas(){const container=document.getElementById('metasContainer');container.innerHTML='';const metas=STATE.weeklyGoals||[];if(!metas.length){container.innerHTML='<p style="color:var(--text-muted);text-align:center;padding:32px">No hay metas. ¡Crea una!</p>';return}metas.forEach((m,i)=>{container.innerHTML+=`<div style="padding:14px 18px;border-radius:10px;border:1px solid var(--border-contrast);background:var(--bg-secondary);margin-bottom:10px;display:flex;align-items:center;gap:12px"><div class="checkbox-circular ${m.done?'checked':''}" onclick="toggleMeta(${i})"></div><span style="flex:1;${m.done?'text-decoration:line-through;opacity:.5':''}">${m.text}</span><button style="color:var(--text-muted);font-size:1rem" onclick="deleteMeta(${i})">🗑️</button></div>`})}
+window.toggleMeta=function(i){STATE.weeklyGoals[i].done=!STATE.weeklyGoals[i].done;playSound(STATE.weeklyGoals[i].done?'check':'uncheck');debouncedSave();renderMetas()};
+window.deleteMeta=function(i){STATE.weeklyGoals.splice(i,1);debouncedSave();renderMetas()};
+document.getElementById('addMetaBtn').addEventListener('click',()=>{const text=prompt('Escribe tu meta:');if(!text)return;STATE.weeklyGoals.push({text,done:false});debouncedSave();renderMetas();playSound('click')});
+
+document.getElementById('expandAllBtn').addEventListener('click',()=>{PHASES.forEach((p,i)=>{setTimeout(()=>{if(!STATE.phasesOpen[p.id])togglePhase(p.id)},i*100)})});
+document.getElementById('collapseAllBtn').addEventListener('click',()=>{PHASES.forEach((p,i)=>{setTimeout(()=>{if(STATE.phasesOpen[p.id])togglePhase(p.id)},i*100)})});
+
+document.getElementById('scrollToPlanBtn').addEventListener('click',()=>{document.getElementById('xpSection').scrollIntoView({behavior:'smooth'})});
+
+document.getElementById('goToNextBtn').addEventListener('click',()=>{const today=new Date();today.setHours(0,0,0,0);for(const d of PLAN_DATA){const dd=new Date(d.date+'T00:00:00');dd.setHours(0,0,0,0);if(dd>=today){const pending=d.activities.find(a=>!STATE.progress.completedActivities[a.id]);if(pending){switchView('panel');setTimeout(()=>{const phaseId=d.phase;if(!STATE.phasesOpen[phaseId])togglePhase(phaseId);setTimeout(()=>{const dayEl=document.querySelector(`.dia-card[data-day="${d.day}"]`);if(dayEl){if(!dayEl.classList.contains('open'))toggleDay(d.day);dayEl.scrollIntoView({behavior:'smooth',block:'center'});playSound('click')}},500)},100);return}}}showToast('🎉 ¡No hay más actividades pendientes!','golden')});
+
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.contentEditable==='true')return;switch(e.key.toLowerCase()){case'f':e.preventDefault();searchInput.focus();break;case'escape':closeSidebar();document.querySelectorAll('.modal-overlay.open').forEach(m=>{m.classList.remove('open');setTimeout(()=>m.remove(),300)});break;case'1':switchView('panel');break;case'2':switchView('calendario');break;case'3':switchView('estadisticas');break;case'4':switchView('nivel');break;case'5':switchView('pomodoro');break;case'6':switchView('notas');break;case'7':switchView('metas');break;case'8':switchView('logros');break;case'9':switchView('configuracion');break;case't':{e.preventDefault();const themes=['obsidiana','lavanda','azul','verde','grafito'];const current=document.documentElement.getAttribute('data-theme')||'obsidiana';const next=themes[(themes.indexOf(current)+1)%themes.length];document.documentElement.setAttribute('data-theme',next);STATE.user.settings.theme=next;playSound('theme');debouncedSave();document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.toggle('active',s.dataset.theme===next));break}}});
+
+let logoClicks=0;
+document.getElementById('siteLogo').addEventListener('click',()=>{logoClicks++;if(logoClicks===10){logoClicks=0;showToast('🎉 ¡Encontraste un secreto! +10 XP','golden');addXP(10)}});
+
+function init(){loadState();initAudio();document.documentElement.setAttribute('data-theme',STATE.user.settings.theme||'obsidiana');document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.toggle('active',s.dataset.theme===STATE.user.settings.theme));document.getElementById('sidebarName').textContent=STATE.user.name;document.getElementById('sidebarAvatar').textContent=STATE.user.avatar||'🧑‍🎓';document.getElementById('nameInput').value=STATE.user.name;document.getElementById('muteBtn').textContent=STATE.user.settings.soundEnabled?'🔊':'🔇';document.getElementById('soundToggle').classList.toggle('on',STATE.user.settings.soundEnabled);document.getElementById('volumeSlider').value=(STATE.user.settings.soundVolume||.6)*100;if(STATE.notes?.general)notesEditor.innerHTML=STATE.notes.general;document.addEventListener('click',()=>resumeAudio(),{once:true});fraseIdx=Math.floor(Math.random()*FRASES.length);document.getElementById('fraseContent').textContent=FRASES[fraseIdx];startFrases();updateClock();updateXPUI();updateDashboard();renderPhases();updatePomoDisplay();document.getElementById('loadingBar').style.width='100%';setTimeout(()=>{const ls=document.getElementById('loadingScreen');ls.classList.add('hide');setTimeout(()=>ls.remove(),600)},2000)}
+
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+</script>
+</body>
+</html>
